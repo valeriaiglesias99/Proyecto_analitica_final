@@ -44,9 +44,11 @@ Los diagramas deben incluir estos bloques, distribuidos segun corresponda:
   - consulta a registros operativos anonimizados provenientes de SQL Server o vistas consolidadas;
   - extraccion desde historicos de sensores consolidados en el entorno analitico;
   - tablas maestras o dimensiones corporativas.
+- Indicar que, para el MVP, la variable prioritaria de la fuente de vuelos es pasajeros programados.
 
 2. Capa de integracion y calidad
 - Mostrar que, en el entorno corporativo, las fuentes pasan por una arquitectura medallion o una capa equivalente de refinamiento progresivo del dato.
+- Hacer visible que sensores y registros de validacion tienen resolucion base a minuto, mientras que la fuente de vuelos aporta referencia temporal programada.
 - Homologacion temporal
 - Limpieza y validacion
 - Filtrado de zona objetivo
@@ -67,6 +69,8 @@ Los diagramas deben incluir estos bloques, distribuidos segun corresponda:
 - Variables de flujo en filtros
 - Variables calendario
 - Lags y variables derivadas
+- Parametro de filtros activos
+- Variables de capacidad y porcentaje de ocupacion
 
 4. Motor analitico
 - Baseline operativo
@@ -82,6 +86,7 @@ Los diagramas deben incluir estos bloques, distribuidos segun corresponda:
 - Historico por filtro
 - Distribucion actual del flujo por filtro
 - Referencia de capacidad visible
+- Porcentaje de ocupacion estimada
 
 6. Interfaz de consulta
 - Tablero principal
@@ -95,7 +100,10 @@ Los diagramas deben incluir estos bloques, distribuidos segun corresponda:
 Incluye estas notas visuales:
 - La alerta principal se emite a nivel zona.
 - El detalle por filtro es analitica complementaria.
-- El horizonte prioritario es de 2h a 4h; 6h y 24h son extensiones.
+- El horizonte prioritario es de 2h a 4h; 6h y 24h siguen disponibles con mayor incertidumbre esperada.
+- La capacidad depende del numero de filtros activos y de un tiempo promedio de proceso por pasajero.
+- La capacidad se estima a nivel minuto y se consolida para la lectura operativa en franjas de 15 minutos.
+- Mostrar umbrales de referencia: alerta desde 70% y criticidad desde 85% de ocupacion.
 - La solucion se valida offline y es reproducible, sin despliegue productivo.
 - El segundo diagrama debe incluir una nota: "Arquitectura simplificada de la POC; no representa la arquitectura empresarial completa".
 - Incluir una pequena leyenda de convenciones:
@@ -116,4 +124,4 @@ Estilo visual:
 
 ## Version corta
 
-Genera dos diagramas horizontales, limpios y profesionales, con exactamente el mismo estilo visual, mismo fondo claro y misma exposicion. El primero debe ser el prototipo fachada completo del artefacto, conectando usuario, requerimientos, forma de uso, modelos, datos y ETL en un flujo coherente y autocontenido. El segundo debe ser una arquitectura simplificada de la POC con data lineage completo: Fuentes -> mecanismos de acceso -> ETL/calidad -> dataset maestro -> pipeline analitico -> capa de consumo. Alerta principal por zona, historico por filtro como complemento, granularidad de 15 minutos, horizontes 2h y 4h como foco, validacion offline reproducible y sin despliegue productivo.
+Genera dos diagramas horizontales, limpios y profesionales, con exactamente el mismo estilo visual, mismo fondo claro y misma exposicion. El primero debe ser el prototipo fachada completo del artefacto, conectando usuario, requerimientos, forma de uso, modelos, datos y ETL en un flujo coherente y autocontenido. El segundo debe ser una arquitectura simplificada de la POC con data lineage completo: Fuentes -> mecanismos de acceso -> ETL/calidad -> dataset maestro -> pipeline analitico -> capa de consumo. Alerta principal por zona, historico por filtro como complemento, fuentes operativas con resolucion base a minuto consolidadas en una lectura de 15 minutos, pasajeros programados como variable principal de la fuente de vuelos, parametro manual de filtros activos, capacidad estimada a minuto y agregada por franja con tiempo promedio de proceso, horizontes 2h y 4h como foco operativo y 6h/24h como opciones de mayor incertidumbre, validacion offline reproducible y sin despliegue productivo.

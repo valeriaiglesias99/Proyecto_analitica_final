@@ -33,7 +33,7 @@ La priorizacion se soporta en el anexo [03_anexo_entrevista_funcional_y_validaci
 
 ### Necesidad a resolver
 
-La operacion hoy reacciona tarde a cambios de demanda. El usuario necesita anticipar el flujo de pasajeros con granularidad de 15 minutos para tomar decisiones tacticas sobre habilitacion de filtros y distribucion de recursos, con especial foco en horizontes cortos del mismo dia.
+La operacion hoy reacciona tarde a cambios de demanda. El usuario necesita anticipar el flujo de pasajeros con granularidad de 15 minutos para tomar decisiones tacticas sobre habilitacion de filtros y distribucion de recursos, con especial foco en horizontes cortos del mismo dia. Aunque algunas fuentes operativas se registran a nivel de minuto, el artefacto consolida la lectura y la prediccion en franjas de 15 minutos para reducir ruido y facilitar decisiones operativas.
 
 ## 3. Problema de negocio
 
@@ -57,7 +57,8 @@ Como anticipar, con granularidad de 15 minutos y horizontes operativos de 2, 4, 
 - historico comparable,
 - detalle historico por filtro,
 - distribucion actual del flujo por filtro y recurso con mayor carga,
-- capacidad de referencia visible en la lectura principal,
+- capacidad de referencia visible en la lectura principal, en unidades absolutas y relativas,
+- porcentaje de ocupacion estimada respecto a la capacidad disponible,
 - nivel visible de confianza o calidad de la prediccion.
 
 ### Outcome esperado
@@ -83,14 +84,14 @@ En esta fase se priorizan indicadores proxy evaluables offline:
 - prediccion cada 15 minutos,
 - alerta principal por zona,
 - doble vista global `Ahora / Historico`,
+- parametro manual para definir cantidad de filtros activos,
 - historicos por filtro,
 - comparacion contra baseline,
-- horizontes de 2h y 4h,
+- horizontes de 2h, 4h, 6h y 24h,
 - muestra anonimizada o controlada para visualizacion.
 
 ### Should
 
-- horizontes de 6h y 24h,
 - indicador visible de confianza,
 - prediccion por filtro cuando el recurso tenga estabilidad suficiente.
 
@@ -113,9 +114,11 @@ El usuario accede a un tablero de consulta sin codigo y puede:
 
 - elegir la vista general del informe entre `Ahora` y `Historico`,
 - seleccionar fecha, zona y granularidad de lectura,
+- definir manualmente la cantidad de filtros activos para el corte o escenario consultado,
 - escoger horizonte de consulta cuando se encuentre en la vista `Ahora`,
 - escoger rango de comparacion cuando se encuentre en la vista `Historico`,
 - revisar el estado de criticidad de la zona y su contraste contra capacidad de referencia,
+- revisar la ocupacion estimada frente a la capacidad disponible en numero de pasajeros y porcentaje,
 - comparar pronostico contra historico comparable,
 - consultar distribucion actual del flujo por filtro o analitica historica por filtro segun la vista elegida,
 - revisar el nivel de confianza visible.
@@ -124,8 +127,8 @@ El usuario accede a un tablero de consulta sin codigo y puede:
 
 1. El coordinador ingresa a la interfaz al inicio de la jornada o durante la operacion intradia.
 2. Define la vista general del informe segun la necesidad del momento: `Ahora` para seguimiento operativo o `Historico` para analisis retrospectivo.
-3. Si se encuentra en `Ahora`, selecciona fecha y horizonte operativo, por ejemplo 2h o 4h; si se encuentra en `Historico`, selecciona la fecha analizada y el rango de comparacion.
-4. Revisa la vista principal de zona para identificar rapidamente el nivel de criticidad esperado y su relacion con la capacidad de referencia.
+3. Si se encuentra en `Ahora`, selecciona fecha, horizonte operativo y cantidad de filtros activos; si se encuentra en `Historico`, selecciona la fecha analizada y el rango de comparacion.
+4. Revisa la vista principal de zona para identificar rapidamente el nivel de criticidad esperado, su relacion con la capacidad de referencia y el porcentaje de ocupacion estimado.
 5. Contrasta la demanda estimada u observada con el historico comparable para determinar si el comportamiento es normal, de alerta o atipico.
 6. Consulta la tabla de franjas priorizadas para ubicar los periodos en los que podria requerirse habilitacion adicional de filtros.
 7. Navega al detalle por filtro: en `Ahora` revisa distribucion actual del flujo y recurso con mayor carga; en `Historico` revisa comportamiento pasado por fecha y comparativo.
@@ -169,6 +172,13 @@ El usuario accede a un tablero de consulta sin codigo y puede:
 - el comportamiento por filtro es valioso como analitica complementaria, pero no siempre todos los filtros estan habilitados ni tienen estabilidad suficiente para soportar una alerta principal independiente;
 - priorizar la zona mejora robustez del MVP y deja el detalle por filtro como segunda capa de analisis.
 
+### La capacidad operativa se controla con un parametro manual de filtros activos
+
+- la operacion requiere evaluar escenarios con diferente cantidad de filtros habilitados durante el dia;
+- permitir al usuario ajustar manualmente el numero de filtros activos mantiene el artefacto conectado con la decision operativa real sin exigir una capa prescriptiva completa;
+- este parametro modifica la capacidad disponible y, por tanto, la lectura de ocupacion y criticidad;
+- la definicion manual del numero de filtros activos es suficientemente simple para el MVP y evita comprometer una programacion operativa completa de recursos.
+
 ### La separacion entre `Ahora` e `Historico` mejora la lectura del artefacto
 
 - el usuario operativo necesita una lectura rapida de corto plazo, mientras que el perfil analitico necesita explorar comparativos retrospectivos sin contaminar la vista principal de monitoreo;
@@ -190,8 +200,10 @@ El usuario accede a un tablero de consulta sin codigo y puede:
 - visualizacion de pronostico cada 15 minutos,
 - visualizacion del volumen proyectado en personas,
 - linea de capacidad de referencia en la grafica principal,
+- visualizacion de ocupacion estimada en porcentaje respecto a capacidad,
 - tabla de franjas priorizadas,
 - semaforo por zona,
+- ajuste manual del numero de filtros activos,
 - distribucion actual por filtro en la vista `Ahora`,
 - analitica historica por filtro en la vista `Historico`,
 - identificacion del filtro con mayor carga en la lectura actual,
@@ -280,20 +292,20 @@ La optimizacion se deja fuera del MVP porque incrementa complejidad y no es nece
 
 | Fuente | Granularidad | Variable clave | Mecanismo de acceso previsto | Uso principal |
 |---|---|---|---|---|
-| Programacion de vuelos | vuelo / tiempo programado | hora programada, destino, aerolinea, pasajeros programados | extraccion desde tablas SQL Server integradas al entorno corporativo o desde exportaciones controladas derivadas de esa capa | senal planificada |
-| Validacion de ingreso al muelle | evento individual / agregable a 15 min | timestamp de paso, vuelo, aerolinea | consulta a registros operativos anonimizados, provenientes de tablas SQL Server o vistas consolidadas del entorno analitico | senal operativa intermedia |
-| Sensores de filtros | conteo por recurso / tiempo | timestamp, filtro, conteo | extraccion desde historicos de sensores consolidados en el entorno analitico o desde repositorios derivados de SQL Server | variable objetivo y validacion de flujo real |
+| Programacion de vuelos | vuelo / tiempo programado | hora programada, destino, aerolinea, pasajeros programados | extraccion desde tablas SQL Server integradas al entorno corporativo o desde exportaciones controladas derivadas de una capa refinada de esa arquitectura | senal planificada |
+| Validacion de ingreso al muelle | evento individual / registro base a minuto, agregable a 15 min | timestamp de paso, vuelo, aerolinea | consulta a registros operativos anonimizados, provenientes de tablas SQL Server o vistas consolidadas del entorno analitico | senal operativa intermedia |
+| Sensores de filtros | conteo por recurso / registro base a minuto, agregable a 15 min | timestamp, filtro, conteo | extraccion desde historicos de sensores consolidados en el entorno analitico o desde repositorios derivados de SQL Server | variable objetivo y validacion de flujo real |
 | Catalogos auxiliares | dimension | aerolinea, operador, recurso | tablas maestras o dimensiones corporativas | homologacion y enriquecimiento |
 
 ## 13. Acceso, ETL y data lineage
 
 ### Flujo general
 
-1. Extraccion de fuentes historicas desde el entorno corporativo.
+1. Extraccion de fuentes historicas desde una capa refinada del entorno corporativo.
 2. Paso por arquitectura medallion o capa analitica equivalente en el entorno fuente.
 3. Homologacion temporal y limpieza.
 4. Filtrado a la zona objetivo.
-5. Agregacion a 15 minutos.
+5. Agregacion desde resolucion base a minuto hacia franjas de 15 minutos.
 6. Construccion de lags y variables calendario.
 7. Consolidacion del dataset maestro.
 8. Entrenamiento, evaluacion y scoring.
@@ -301,15 +313,25 @@ La optimizacion se deja fuera del MVP porque incrementa complejidad y no es nece
 
 ### Contexto de arquitectura de datos
 
-Las fuentes operativas del caso residen en bases de datos SQL Server y, en el entorno corporativo, su integracion analitica se soporta sobre una arquitectura medallion o una capa equivalente de refinamiento progresivo del dato. Para este prototipo no se plantea una conexion productiva directa a esa arquitectura completa; por consideraciones de confidencialidad y alcance, la solucion se construye sobre una muestra controlada y anonimizada, derivada de dichas fuentes y suficiente para reproducir el flujo analitico del MVP.
+Las fuentes operativas del caso residen en bases de datos SQL Server y, en el entorno corporativo, su integracion analitica se soporta sobre una arquitectura medallion o una capa equivalente de refinamiento progresivo del dato. Para este prototipo no se plantea una conexion productiva directa a esa arquitectura completa; por consideraciones de confidencialidad y alcance, la solucion se construye sobre una muestra controlada y anonimizada, derivada de una capa refinada de dichas fuentes y suficiente para reproducir el flujo analitico del MVP.
+
+### Regla de capacidad operativa
+
+La capacidad de referencia de la zona se calcula a partir del numero de filtros activos definido manualmente por el usuario y del tiempo promedio de proceso por pasajero. En esta version del prototipo se toma como referencia un tiempo promedio de 23 segundos por persona. El calculo base se formula a nivel de minuto y luego se agrega a la franja operativa de 15 minutos, de modo consistente con la resolucion del tablero. La capacidad estimada se expresa tanto en numero de pasajeros como en porcentaje de ocupacion sobre dicha capacidad, de modo que el tablero pueda clasificar las franjas en condiciones normales, de alerta y criticas.
+
+De manera inicial, la lectura de criticidad se plantea con estos umbrales:
+
+- alerta desde 70% de ocupacion estimada;
+- criticidad desde 85% de ocupacion estimada.
 
 ### Desarrollos requeridos para acceso y procesamiento
 
 - identificacion de la capa fuente y de la capa refinada desde la cual se extraera la muestra de trabajo;
 - homologacion de llaves temporales entre las tres fuentes principales;
 - definicion de reglas de filtrado para la zona objetivo;
-- agregacion y consolidacion de eventos a una granularidad de 15 minutos;
+- agregacion y consolidacion de eventos desde resolucion base a minuto hacia una granularidad de 15 minutos;
 - construccion de variables derivadas y lags para representar anticipacion operativa;
+- incorporacion del parametro de filtros activos en la capa de salida para recalcular capacidad y ocupacion;
 - preparacion de salidas consumibles por la interfaz de consulta.
 
 ### Riesgos de calidad y mitigacion
@@ -354,7 +376,9 @@ Esta representacion incluye:
 - semaforo por zona,
 - linea temporal de demanda,
 - capacidad de referencia,
+- porcentaje de ocupacion respecto a capacidad,
 - volumen proyectado en personas,
+- parametro manual de filtros activos,
 - distribucion actual por filtro,
 - reporte historico por filtro,
 - cambio de controles segun la vista seleccionada.
@@ -373,8 +397,9 @@ Esta representacion incluye:
 
 - existe acceso a las tres fuentes historicas necesarias;
 - las llaves de union entre fuentes pueden homologarse;
+- la muestra de trabajo corresponde a 3 meses historicos anonimizados;
 - el horizonte con mayor valor operativo es 2h a 4h;
-- 6h y 24h son extensiones del mismo artefacto con menor confiabilidad esperada;
+- 6h y 24h forman parte del artefacto, con menor confiabilidad esperada frente a los horizontes cortos;
 - el prototipo se valida offline y en entorno controlado.
 
 ## 19. Limitaciones

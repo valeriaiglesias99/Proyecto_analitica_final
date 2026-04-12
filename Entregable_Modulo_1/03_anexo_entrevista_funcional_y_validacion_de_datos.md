@@ -65,11 +65,11 @@ La priorizacion recae sobre el coordinador de operaciones porque es el perfil as
 
 - una vista de corto plazo para las proximas 2 a 4 horas,
 - una vista ampliada a 6 horas,
-- y una vista de 24 horas o del dia siguiente, entendiendo que la confiabilidad disminuye con el horizonte.
+- y una vista de 24 horas o del dia siguiente, entendiendo que la confiabilidad disminuye con el horizonte, pero manteniendo su utilidad como opcion disponible del artefacto.
 
 ### Pregunta 7. Sobre que nivel necesita ver el resultado?
 
-**Respuesta resumida:** la alerta principal deberia mostrarse por zona, pero el usuario tambien necesita consultar historicos por filtro. Las predicciones por filtro son utiles si no vuelven demasiado complejo el MVP.
+**Respuesta resumida:** la alerta principal deberia mostrarse por zona, pero el usuario tambien necesita consultar historicos por filtro. Las predicciones por filtro son utiles si no vuelven demasiado complejo el MVP. Tambien se considera deseable que la interfaz permita ajustar manualmente la cantidad de filtros activos para recalcular la capacidad operativa del escenario consultado.
 
 ### Pregunta 8. Que se considera una franja critica?
 
@@ -116,7 +116,7 @@ Tambien se concluye que existe un segundo nivel de uso analitico, asociado a la 
 
 ### Pregunta 14. Cual es la granularidad adecuada para el prototipo?
 
-**Respuesta resumida:** la granularidad objetivo es de 15 minutos.
+**Respuesta resumida:** la granularidad objetivo del artefacto es de 15 minutos. Sin embargo, se reconoce que las fuentes operativas de validacion y sensores se registran a una resolucion base de minuto y deben agregarse para construir la lectura operativa del tablero.
 
 ### Pregunta 15. Cuales son las fuentes principales del caso?
 
@@ -127,6 +127,8 @@ Tambien se concluye que existe un segundo nivel de uso analitico, asociado a la 
 - sensores de flujo en filtros.
 
 Adicionalmente, existen tablas auxiliares de apoyo como catalogos de aerolineas.
+
+En la fuente de vuelos, la variable operativa priorizada para el MVP es la de pasajeros programados.
 
 ### Pregunta 16. Que representa cada fuente en el proceso operativo?
 
@@ -142,7 +144,7 @@ programacion -> ingreso al muelle -> paso por filtros.
 
 ### Pregunta 17. Que tan confiables son las fuentes?
 
-**Respuesta resumida:** el usuario indica que la informacion operativa principal es confiable para la solucion propuesta y que tanto la fuente de vuelos como los sensores y los registros de validacion son utiles para modelado.
+**Respuesta resumida:** el usuario indica que la informacion operativa principal es confiable para la solucion propuesta y que tanto la fuente de vuelos como los sensores y los registros de validacion son utiles para modelado. Tambien se establece que, aunque existen horas programadas, estimadas y reales, la referencia prioritaria para este prototipo es la hora programada del vuelo.
 
 ### Pregunta 18. Sobre que ambito debe construirse el MVP?
 
@@ -154,7 +156,15 @@ programacion -> ingreso al muelle -> paso por filtros.
 
 ### Pregunta 20. Que historico es razonable usar para el prototipo?
 
-**Respuesta resumida:** se considera razonable trabajar con 3 a 6 meses de informacion, manteniendo la posibilidad de mostrar el historico y simular cortes del dia actual.
+**Respuesta resumida:** se considera razonable trabajar con 3 meses de informacion historica anonimizados, manteniendo la posibilidad de mostrar el historico y simular cortes del dia actual.
+
+### Pregunta 20.1. Como debe entenderse la capacidad operativa?
+
+**Respuesta resumida:** la capacidad debe calcularse a partir del numero de filtros activos y del tiempo promedio de proceso por pasajero. Para este caso se dispone de una referencia de 23 segundos por persona y se espera que la interfaz permita ajustar manualmente la cantidad de filtros activos para recalcular la capacidad del escenario consultado. El calculo base puede formularse a nivel de minuto y agregarse despues a la franja operativa de 15 minutos.
+
+### Pregunta 20.2. Como deben interpretarse las franjas de alerta?
+
+**Respuesta resumida:** la lectura de criticidad debe apoyarse en umbrales operativos sobre la ocupacion estimada de la capacidad. Como referencia inicial, se consideran alertas desde 70% y condiciones criticas desde 85% de ocupacion.
 
 ### Pregunta 21. Hay restricciones fuertes de confidencialidad?
 
@@ -165,10 +175,12 @@ programacion -> ingreso al muelle -> paso por filtros.
 De este bloque se concluye que:
 
 - el target principal es el flujo medido en filtros;
-- la granularidad adecuada es 15 minutos;
+- la granularidad adecuada del artefacto es 15 minutos, aunque parte de las fuentes se registren a minuto;
 - la alerta principal debe agregarse por zona;
 - el detalle por filtro queda como analitica complementaria;
-- la cadena temporal entre fuentes debe reflejarse en el diseno del modelo y en la ingenieria de variables.
+- la cadena temporal entre fuentes debe reflejarse en el diseno del modelo y en la ingenieria de variables;
+- la capacidad operativa debe depender del numero de filtros activos y del tiempo promedio de proceso;
+- la hora programada del vuelo es la referencia temporal prioritaria para el modelado base.
 
 ## 6. Implicaciones para el prototipo
 
@@ -181,8 +193,10 @@ Las decisiones de diseno derivadas de la entrevista son:
 - distribucion actual del flujo por filtro como soporte puntual de la decision operativa;
 - prediccion por filtro como deseable, no como obligatoria en el MVP;
 - granularidad de 15 minutos;
-- horizontes 2h y 4h como prioridad, 6h y 24h como extension;
+- horizontes 2h y 4h como prioridad, 6h y 24h como opcion disponible con mayor incertidumbre esperada;
+- ajuste manual de filtros activos como parametro del escenario operativo;
 - referencia de capacidad visible como apoyo para interpretar criticidad;
+- ocupacion expresada tanto en volumen como en porcentaje;
 - necesidad de mostrar confiabilidad visible junto con la prediccion;
 - uso de las tres fuentes en secuencia funcional para el diseno del dataset maestro.
 
@@ -195,6 +209,7 @@ El levantamiento realizado permite consolidar los siguientes elementos para el d
 - la salida principal del artefacto debe ser una alerta agregada por zona, complementada con una vista operativa actual y una vista historica de comparacion;
 - el detalle por filtro debe existir en dos niveles: distribucion actual del flujo para la lectura intradia y consulta historica para el analisis retrospectivo;
 - la granularidad de analisis adecuada para el MVP es de 15 minutos;
-- los horizontes de mayor valor operativo son 2h y 4h, mientras que 6h y 24h pueden manejarse como vistas de mayor incertidumbre;
+- los horizontes de mayor valor operativo son 2h y 4h, mientras que 6h y 24h deben mantenerse disponibles con una lectura explicita de mayor incertidumbre;
 - el target principal debe construirse con el flujo observado en filtros, usando como soporte la secuencia entre programacion de vuelos, ingreso al muelle y paso por filtros;
+- la capacidad operativa debe calcularse con base en filtros activos y tiempo promedio de proceso;
 - el alcance del prototipo debe concentrarse en los 13 filtros de la zona internacional objetivo, manteniendo el detalle por filtro como analitica complementaria.
