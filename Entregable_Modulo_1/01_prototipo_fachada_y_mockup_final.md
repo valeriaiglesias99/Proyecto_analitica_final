@@ -25,137 +25,137 @@ El usuario principal priorizado es el coordinador de operaciones encargado de mo
 La priorizacion se soporta en el anexo [03_anexo_entrevista_funcional_y_validacion_de_datos.md](03_anexo_entrevista_funcional_y_validacion_de_datos.md) y en la naturaleza operativa del caso:
 
 - en la entrevista, el usuario consultado se identifica como coordinador de operaciones y declara que sus decisiones centrales son habilitar filtros, alertar congestion y redistribuir recursos;
-- el horizonte de mayor valor declarado es de 2h a 4h, lo cual corresponde a decisiones intradia y no a seguimiento directivo de largo plazo;
+- el horizonte de mayor valor declarado es de 2h a 4h, lo cual corresponde a decisiones intradía y no a seguimiento directivo de largo plazo;
 - la granularidad requerida de 15 minutos y la necesidad de una alerta por zona evidencian un uso operativo de alta frecuencia;
-- el requerimiento de acceso visual simple y sin codigo confirma que la primera capa del artefacto debe responder a un usuario de accion rapida;
-- la necesidad de revisar historicos por filtro sugiere un segundo perfil analitico, orientado a validacion y seguimiento;
-- la lectura agregada por zona tambien puede ser consumida por un perfil de supervision, pero no es el usuario critico para definir el MVP, dado que el valor diferencial del artefacto se concentra en la anticipacion operativa.
+- el requerimiento de acceso visual simple y sin código confirma que la primera capa del artefacto debe responder a un usuario de acción rápida;
+- la necesidad de revisar históricos por filtro sugiere un segundo perfil analítico, orientado a validación y seguimiento;
+- la lectura agregada por zona también puede ser consumida por un perfil de supervisión, pero no es el usuario crítico para definir el MVP, dado que el valor diferencial del artefacto se concentra en la anticipacion operativa.
 
 ### Necesidad a resolver
 
-La operacion hoy reacciona tarde a cambios de demanda. El usuario necesita anticipar el flujo de pasajeros con granularidad de 15 minutos para tomar decisiones tacticas sobre habilitacion de filtros y distribucion de recursos, con especial foco en horizontes cortos del mismo dia. Aunque algunas fuentes operativas se registran a nivel de minuto, el artefacto consolida la lectura y la prediccion en franjas de 15 minutos para reducir ruido y facilitar decisiones operativas.
+La operación hoy reacciona tarde a cambios de demanda. El usuario necesita anticipar el flujo de pasajeros con granularidad de 15 minutos para tomar decisiones tácticas sobre habilitación de filtros y distribución de recursos, con especial foco en horizontes cortos del mismo día. Aunque algunas fuentes operativas se registran a nivel de minuto, el artefacto consolida la lectura y la predicción en franjas de 15 minutos para reducir ruido y facilitar decisiones operativas.
 
 ## 3. Problema de negocio
 
-Como anticipar, con granularidad de 15 minutos y horizontes operativos de 2, 4, 6 y hasta 24 horas, las franjas con mayor flujo esperado en filtros de la zona internacional objetivo para apoyar decisiones de habilitacion y distribucion de recursos.
+Como anticipar, con granularidad de 15 minutos y horizontes operativos de 2, 4, 6 y hasta 24 horas, las franjas con mayor flujo esperado en filtros de la zona internacional objetivo para apoyar decisiones de habilitación y distribución de recursos.
 
-## 4. Modelo logico de impacto
+## 4. Modelo lógico de impacto
 
 ### Input
 
-- programacion de vuelos,
-- registros de validacion de ingreso al muelle,
+- programación de vuelos,
+- registros de validación de ingreso al muelle,
 - sensores de paso por filtros,
 - variables calendario y catalogos auxiliares.
 
 ### Output
 
-- pronostico por franja de 15 minutos,
-- semaforo de criticidad por zona,
-- vista operativa `Ahora` para seguimiento intradia,
-- vista `Historico` para comparacion retrospectiva,
-- historico comparable,
-- detalle historico por filtro,
-- distribucion actual del flujo por filtro y recurso con mayor carga,
+- pronóstico por franja de 15 minutos,
+- semáforo de criticidad por zona,
+- vista operativa `Ahora` para seguimiento intradía,
+- vista `Histórico` para comparación retrospectiva,
+- histórico comparable,
+- detalle histórico por filtro,
+- distribución actual del flujo por filtro y recurso con mayor carga,
 - capacidad de referencia visible en la lectura principal, en unidades absolutas y relativas,
-- porcentaje de ocupacion estimada respecto a la capacidad disponible,
-- nivel visible de confianza o calidad de la prediccion.
+- porcentaje de ocupación estimada respecto a la capacidad disponible,
+- nivel visible de confianza o calidad de la predicción.
 
 ### Outcome esperado
 
-- mejor anticipacion de franjas criticas,
-- menor reaccion tardia ante congestion,
-- mejor habilitacion tactica de filtros.
+- mejor anticipación de franjas críticas,
+- menor reacción tardía ante congestión,
+- mejor habilitación táctica de filtros.
 
-## 5. KPIs y metrica de impacto esperada
+## 5. KPIs y métrica de impacto esperada
 
 En esta fase se priorizan indicadores proxy evaluables offline:
 
-- capacidad de identificar franjas criticas,
+- capacidad de identificar franjas críticas,
 - mejora frente a baseline historico simple,
-- cobertura de las franjas y horizontes utiles para planeacion,
+- cobertura de las franjas y horizontes utiles para planeación,
 - confiabilidad visible de la alerta para el usuario.
 
 ## 6. Alcance del MVP
 
 ### Must
 
-- integracion de tres fuentes prioritarias,
-- prediccion cada 15 minutos,
+- integración de tres fuentes prioritarias,
+- predicción cada 15 minutos,
 - alerta principal por zona,
-- doble vista global `Ahora / Historico`,
-- parametro manual para definir cantidad de filtros activos,
-- historicos por filtro,
-- comparacion contra baseline,
+- doble vista global `Ahora / Histórico`,
+- parámetro manual para definir cantidad de filtros activos,
+- históricos por filtro,
+- comparación contra baseline,
 - horizontes de 2h, 4h, 6h y 24h,
-- muestra anonimizada o controlada para visualizacion.
+- muestra anonimizada o controlada para visualización.
 
 ### Should
 
 - indicador visible de confianza,
-- prediccion por filtro cuando el recurso tenga estabilidad suficiente.
+- predicción por filtro cuando el recurso tenga estabilidad suficiente.
 
 ### Could
 
-- recomendacion simple basada en reglas,
-- tiempos de proceso como senal de anomalia operacional.
+- recomendación simple basada en reglas,
+- tiempos de proceso como senal de anomalía operacional.
 
 ### Fuera de alcance
 
-- optimizacion completa de dotaciones,
+- optimización completa de dotaciones,
 - despliegue productivo,
-- medicion real de ahorros,
-- adopcion real en operacion,
-- integracion corporativa completa.
+- medición real de ahorros,
+- adopción real en operación,
+- integración corporativa completa.
 
 ## 7. Forma de uso esperada
 
-El usuario accede a un tablero de consulta sin codigo y puede:
+El usuario accede a un tablero de consulta sin código y puede:
 
-- elegir la vista general del informe entre `Ahora` y `Historico`,
+- elegir la vista general del informe entre `Ahora` y `Histórico`,
 - seleccionar fecha, zona y granularidad de lectura,
 - definir manualmente la cantidad de filtros activos para el corte o escenario consultado,
 - escoger horizonte de consulta cuando se encuentre en la vista `Ahora`,
-- escoger rango de comparacion cuando se encuentre en la vista `Historico`,
+- escoger rango de comparación cuando se encuentre en la vista `Histórico`,
 - revisar el estado de criticidad de la zona y su contraste contra capacidad de referencia,
-- revisar la ocupacion estimada frente a la capacidad disponible en numero de pasajeros y porcentaje,
-- comparar pronostico contra historico comparable,
-- consultar distribucion actual del flujo por filtro o analitica historica por filtro segun la vista elegida,
+- revisar la ocupación estimada frente a la capacidad disponible en numero de pasajeros y porcentaje,
+- comparar pronóstico contra histórico comparable,
+- consultar distribución actual del flujo por filtro o analítica histórica por filtro según la vista elegida,
 - revisar el nivel de confianza visible.
 
-## 8. Flujo de interaccion del usuario
+## 8. Flujo de interacción del usuario
 
-1. El coordinador ingresa a la interfaz al inicio de la jornada o durante la operacion intradia.
-2. Define la vista general del informe segun la necesidad del momento: `Ahora` para seguimiento operativo o `Historico` para analisis retrospectivo.
-3. Si se encuentra en `Ahora`, selecciona fecha, horizonte operativo y cantidad de filtros activos; si se encuentra en `Historico`, selecciona la fecha analizada y el rango de comparacion.
-4. Revisa la vista principal de zona para identificar rapidamente el nivel de criticidad esperado, su relacion con la capacidad de referencia y el porcentaje de ocupacion estimado.
-5. Contrasta la demanda estimada u observada con el historico comparable para determinar si el comportamiento es normal, de alerta o atipico.
-6. Consulta la tabla de franjas priorizadas para ubicar los periodos en los que podria requerirse habilitacion adicional de filtros.
-7. Navega al detalle por filtro: en `Ahora` revisa distribucion actual del flujo y recurso con mayor carga; en `Historico` revisa comportamiento pasado por fecha y comparativo.
-8. Con base en la lectura agregada y el detalle complementario, decide habilitar filtros, redistribuir recursos o mantener la configuracion actual.
-9. En cortes posteriores del dia, repite la consulta para actualizar la lectura operativa y verificar si la criticidad prevista se mantiene, aumenta o disminuye.
+1. El coordinador ingresa a la interfaz al inicio de la jornada o durante la operación intradía.
+2. Define la vista general del informe según la necesidad del momento: `Ahora` para seguimiento operativo o `Histórico` para análisis retrospectivo.
+3. Si se encuentra en `Ahora`, selecciona fecha, horizonte operativo y cantidad de filtros activos; si se encuentra en `Histórico`, selecciona la fecha analizada y el rango de comparación.
+4. Revisa la vista principal de zona para identificar rapidamente el nivel de criticidad esperado, su relación con la capacidad de referencia y el porcentaje de ocupación estimado.
+5. Contrasta la demanda estimada u observada con el histórico comparable para determinar si el comportamiento es normal, de alerta o atipico.
+6. Consulta la tabla de franjas priorizadas para ubicar los periodos en los que podría requerirse habilitación adicional de filtros.
+7. Navega al detalle por filtro: en `Ahora` revisa distribución actual del flujo y recurso con mayor carga; en `Histórico` revisa comportamiento pasado por fecha y comparativo.
+8. Con base en la lectura agregada y el detalle complementario, decide habilitar filtros, redistribuir recursos o mantener la configuración actual.
+9. En cortes posteriores del día, repite la consulta para actualizar la lectura operativa y verificar si la criticidad prevista se mantiene, aumenta o disminuye.
 
 ### Salidas que consume cada perfil
 
 - coordinador de operaciones:
-  semaforo por zona, franjas criticas, linea temporal y nivel visible de confianza;
+  semáforo por zona, franjas críticas, línea temporal y nivel visible de confianza;
 - analista de control operativo:
-  historicos comparables, detalle por filtro y trazabilidad del comportamiento observado;
-- responsable tactico o de supervision:
-  resumen agregado, comparacion general contra historico y lectura sintetica del estado esperado de la operacion.
+  históricos comparables, detalle por filtro y trazabilidad del comportamiento observado;
+- responsable táctico o de supervisión:
+  resumen agregado, comparacion general contra histórico y lectura sintética del estado esperado de la operación.
 
 ## 9. Decisiones de diseño justificadas
 
 ### El tablero es la forma de uso principal del artefacto
 
-- el caso requiere lectura rapida de multiples elementos al mismo tiempo: criticidad, linea temporal, comparacion historica y detalle por filtro;
-- la consulta principal se realiza en un contexto de monitoreo operativo donde una vista consolidada tiene mayor valor que una interaccion movil reducida;
-- un tablero facilita comparacion visual, jerarquia de alertas y navegacion entre zona y filtro sin aumentar complejidad de desarrollo;
-- una aplicacion movil puede ser una extension futura, pero no es la forma prioritaria para el MVP dado el tipo de decision y el entorno de uso esperado.
+- el caso requiere lectura rápida de multiples elementos al mismo tiempo: criticidad, línea temporal, comparación histórica y detalle por filtro;
+- la consulta principal se realiza en un contexto de monitoreo operativo donde una vista consolidada tiene mayor valor que una interacción móvil reducida;
+- un tablero facilita comparacion visual, jerarquía de alertas y navegación entre zona y filtro sin aumentar complejidad de desarrollo;
+- una aplicación móvil puede ser una extension futura, pero no es la forma prioritaria para el MVP dado el tipo de decisión y el entorno de uso esperado.
 
 ### La interfaz de consulta tiene prioridad sobre una API como producto visible
 
-- la necesidad del usuario no es consumir un servicio tecnico aislado, sino interpretar rapidamente una situacion operativa;
+- la necesidad del usuario no es consumir un servicio técnico aislado, sino interpretar rapidamente una situacion operativa;
 - la salida requiere semaforos, historicos comparables y una lectura visual de franjas criticas, elementos que una API por si sola no resuelve para el usuario final;
 - una API podria existir como componente tecnico interno, pero la forma de uso principal del artefacto debe ser una interfaz de consulta.
 
