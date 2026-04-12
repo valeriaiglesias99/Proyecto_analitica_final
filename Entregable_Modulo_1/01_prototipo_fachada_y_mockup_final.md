@@ -12,13 +12,13 @@ Tablero predictivo para planeacion tactica de demanda en filtros de una zona int
 
 | Perfil | Rol dentro del caso | Necesidad principal | Salida esperada | Prioridad |
 |---|---|---|---|---|
-| Coordinador de operaciones | Monitorea flujos intradia y decide habilitacion de filtros y redistribucion de recursos | Anticipar picos de demanda con suficiente tiempo para actuar | Semaforo por zona, linea temporal, franjas criticas y nivel de confianza visible | Alta |
-| Analista de control operativo | Revisa historicos, valida comportamientos atipicos y analiza patrones por recurso | Entender comportamiento pasado, contrastar dias comparables y revisar detalle por filtro | Historicos comparables, trazabilidad temporal y analitica complementaria por filtro | Media |
-| Responsable tactico o de supervision | Revisa desempeno general, necesidades de capacidad y comportamiento agregado de la operacion | Contar con una vista sintetica del comportamiento esperado y observado para seguimiento operativo | Resumen agregado por zona, franjas criticas del dia y comparacion general contra historico | Media-baja |
+| Coordinador de operaciones | Monitorea flujos intradía y decide la habilitación de filtros y la redistribución de recursos. | Anticipar picos de demanda con suficiente tiempo para actuar. | Semáforo por zona, línea temporal, franjas críticas y nivel de confianza visible. | Alta |
+| Analista de control operativo | Revisa históricos, valida comportamientos atípicos y analiza patrones por recurso. | Entender comportamiento pasado, contrastar días comparables y revisar detalle por filtro. | Históricos comparables, trazabilidad temporal y analítica complementaria por filtro. | Media |
+| Responsable táctico o de supervisión | Revisa desempeno general, necesidades de capacidad y comportamiento agregado de la operación. | Contar con una vista sintética del comportamiento esperado y observado para seguimiento operativo. | Resumen agregado por zona, franjas críticas del día y comparación general contra histórico. | Media-baja |
 
 ### Usuario priorizado
 
-El usuario principal priorizado es el coordinador de operaciones encargado de monitorear flujos, emitir alertas y decidir la habilitacion de recursos en filtros durante el dia.
+El usuario principal priorizado es el coordinador de operaciones encargado de monitorear flujos, emitir alertas y decidir la habilitación de recursos en filtros durante el día.
 
 ### Sustento de la priorizacion
 
