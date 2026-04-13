@@ -4,7 +4,7 @@
 
 ## 1. Nombre del artefacto
 
-Tablero predictivo para planeacion tactica de demanda en filtros de una zona internacional de control.
+Tablero predictivo para planificación táctica de demanda en filtros de una zona internacional de control.
 
 ## 2. Usuario final y necesidad
 
@@ -14,22 +14,22 @@ Tablero predictivo para planeacion tactica de demanda en filtros de una zona int
 |---|---|---|---|---|
 | Coordinador de operaciones | Monitorea flujos intradía y decide la habilitación de filtros y la redistribución de recursos. | Anticipar picos de demanda con suficiente tiempo para actuar. | Semáforo por zona, línea temporal, franjas críticas y nivel de confianza visible. | Alta |
 | Analista de control operativo | Revisa históricos, valida comportamientos atípicos y analiza patrones por recurso. | Entender comportamiento pasado, contrastar días comparables y revisar detalle por filtro. | Históricos comparables, trazabilidad temporal y analítica complementaria por filtro. | Media |
-| Responsable táctico o de supervisión | Revisa desempeno general, necesidades de capacidad y comportamiento agregado de la operación. | Contar con una vista sintética del comportamiento esperado y observado para seguimiento operativo. | Resumen agregado por zona, franjas críticas del día y comparación general contra histórico. | Media-baja |
+| Responsable táctico o de supervisión | Revisa desempeño general, necesidades de capacidad y comportamiento agregado de la operación. | Contar con una vista sintética del comportamiento esperado y observado para seguimiento operativo. | Resumen agregado por zona, franjas críticas del día y comparación general contra histórico. | Media-baja |
 
 ### Usuario priorizado
 
 El usuario principal priorizado es el coordinador de operaciones encargado de monitorear flujos, emitir alertas y decidir la habilitación de recursos en filtros durante el día.
 
-### Sustento de la priorizacion
+### Sustento de la priorización
 
-La priorizacion se soporta en el anexo [03_anexo_entrevista_funcional_y_validacion_de_datos.md](03_anexo_entrevista_funcional_y_validacion_de_datos.md) y en la naturaleza operativa del caso:
+La priorización se soporta en el Anexo 1. Entrevista funcional y validación de datos, que hará parte del entregable en formato PDF, y en la naturaleza operativa del caso:
 
-- en la entrevista, el usuario consultado se identifica como coordinador de operaciones y declara que sus decisiones centrales son habilitar filtros, alertar congestion y redistribuir recursos;
+- en la entrevista, el usuario consultado se identifica como coordinador de operaciones y declara que sus decisiones centrales son habilitar filtros, alertar congestión y redistribuir recursos;
 - el horizonte de mayor valor declarado es de 2h a 4h, lo cual corresponde a decisiones intradía y no a seguimiento directivo de largo plazo;
 - la granularidad requerida de 15 minutos y la necesidad de una alerta por zona evidencian un uso operativo de alta frecuencia;
 - el requerimiento de acceso visual simple y sin código confirma que la primera capa del artefacto debe responder a un usuario de acción rápida;
 - la necesidad de revisar históricos por filtro sugiere un segundo perfil analítico, orientado a validación y seguimiento;
-- la lectura agregada por zona también puede ser consumida por un perfil de supervisión, pero no es el usuario crítico para definir el MVP, dado que el valor diferencial del artefacto se concentra en la anticipacion operativa.
+- la lectura agregada por zona también puede ser consumida por un perfil de supervisión, pero no es el usuario crítico para definir el MVP, dado que el valor diferencial del artefacto se concentra en la anticipación operativa.
 
 ### Necesidad a resolver
 
@@ -37,7 +37,7 @@ La operación hoy reacciona tarde a cambios de demanda. El usuario necesita anti
 
 ## 3. Problema de negocio
 
-Como anticipar, con granularidad de 15 minutos y horizontes operativos de 2, 4, 6 y hasta 24 horas, las franjas con mayor flujo esperado en filtros de la zona internacional objetivo para apoyar decisiones de habilitación y distribución de recursos.
+Cómo anticipar, con granularidad de 15 minutos y horizontes operativos de 2, 4, 6 y hasta 24 horas, las franjas con mayor flujo esperado en filtros de la zona internacional objetivo para apoyar decisiones de habilitación y distribución de recursos.
 
 ## 4. Modelo lógico de impacto
 
@@ -46,7 +46,7 @@ Como anticipar, con granularidad de 15 minutos y horizontes operativos de 2, 4, 
 - programación de vuelos,
 - registros de validación de ingreso al muelle,
 - sensores de paso por filtros,
-- variables calendario y catalogos auxiliares.
+- variables calendario y catálogos auxiliares.
 
 ### Output
 
@@ -67,13 +67,13 @@ Como anticipar, con granularidad de 15 minutos y horizontes operativos de 2, 4, 
 - menor reacción tardía ante congestión,
 - mejor habilitación táctica de filtros.
 
-## 5. KPIs y métrica de impacto esperada
+## 5. Indicadores y métricas de impacto esperadas
 
 En esta fase se priorizan indicadores proxy evaluables offline:
 
 - capacidad de identificar franjas críticas,
-- mejora frente a baseline historico simple,
-- cobertura de las franjas y horizontes utiles para planeación,
+- mejora frente a baseline histórico simple,
+- cobertura de las franjas y horizontes útiles para planeación,
 - confiabilidad visible de la alerta para el usuario.
 
 ## 6. Alcance del MVP
@@ -98,7 +98,7 @@ En esta fase se priorizan indicadores proxy evaluables offline:
 ### Could
 
 - recomendación simple basada en reglas,
-- tiempos de proceso como senal de anomalía operacional.
+- tiempos de proceso como señal de anomalía operacional.
 
 ### Fuera de alcance
 
@@ -118,7 +118,7 @@ El usuario accede a un tablero de consulta sin código y puede:
 - escoger horizonte de consulta cuando se encuentre en la vista `Ahora`,
 - escoger rango de comparación cuando se encuentre en la vista `Histórico`,
 - revisar el estado de criticidad de la zona y su contraste contra capacidad de referencia,
-- revisar la ocupación estimada frente a la capacidad disponible en numero de pasajeros y porcentaje,
+- revisar la ocupación estimada frente a la capacidad disponible en número de pasajeros y porcentaje,
 - comparar pronóstico contra histórico comparable,
 - consultar distribución actual del flujo por filtro o analítica histórica por filtro según la vista elegida,
 - revisar el nivel de confianza visible.
@@ -128,8 +128,8 @@ El usuario accede a un tablero de consulta sin código y puede:
 1. El coordinador ingresa a la interfaz al inicio de la jornada o durante la operación intradía.
 2. Define la vista general del informe según la necesidad del momento: `Ahora` para seguimiento operativo o `Histórico` para análisis retrospectivo.
 3. Si se encuentra en `Ahora`, selecciona fecha, horizonte operativo y cantidad de filtros activos; si se encuentra en `Histórico`, selecciona la fecha analizada y el rango de comparación.
-4. Revisa la vista principal de zona para identificar rapidamente el nivel de criticidad esperado, su relación con la capacidad de referencia y el porcentaje de ocupación estimado.
-5. Contrasta la demanda estimada u observada con el histórico comparable para determinar si el comportamiento es normal, de alerta o atipico.
+4. Revisa la vista principal de zona para identificar rápidamente el nivel de criticidad esperado, su relación con la capacidad de referencia y el porcentaje de ocupación estimado.
+5. Contrasta la demanda estimada u observada con el histórico comparable para determinar si el comportamiento es normal, de alerta o atípico.
 6. Consulta la tabla de franjas priorizadas para ubicar los periodos en los que podría requerirse habilitación adicional de filtros.
 7. Navega al detalle por filtro: en `Ahora` revisa distribución actual del flujo y recurso con mayor carga; en `Histórico` revisa comportamiento pasado por fecha y comparativo.
 8. Con base en la lectura agregada y el detalle complementario, decide habilitar filtros, redistribuir recursos o mantener la configuración actual.
@@ -142,62 +142,62 @@ El usuario accede a un tablero de consulta sin código y puede:
 - analista de control operativo:
   históricos comparables, detalle por filtro y trazabilidad del comportamiento observado;
 - responsable táctico o de supervisión:
-  resumen agregado, comparacion general contra histórico y lectura sintética del estado esperado de la operación.
+  resumen agregado, comparación general contra histórico y lectura sintética del estado esperado de la operación.
 
 ## 9. Decisiones de diseño justificadas
 
 ### El tablero es la forma de uso principal del artefacto
 
-- el caso requiere lectura rápida de multiples elementos al mismo tiempo: criticidad, línea temporal, comparación histórica y detalle por filtro;
+- el caso requiere lectura rápida de múltiples elementos al mismo tiempo: criticidad, línea temporal, comparación histórica y detalle por filtro;
 - la consulta principal se realiza en un contexto de monitoreo operativo donde una vista consolidada tiene mayor valor que una interacción móvil reducida;
-- un tablero facilita comparacion visual, jerarquía de alertas y navegación entre zona y filtro sin aumentar complejidad de desarrollo;
-- una aplicación móvil puede ser una extension futura, pero no es la forma prioritaria para el MVP dado el tipo de decisión y el entorno de uso esperado.
+- un tablero facilita comparación visual, jerarquía de alertas y navegación entre zona y filtro sin aumentar complejidad de desarrollo;
+- una aplicación móvil puede ser una extensión futura, pero no es la forma prioritaria para el MVP dado el tipo de decisión y el entorno de uso esperado.
 
 ### La interfaz de consulta tiene prioridad sobre una API como producto visible
 
 - la necesidad del usuario no es consumir un servicio técnico aislado, sino interpretar rápidamente una situación operativa;
-- la salida requiere semáforos, historicos comparables y una lectura visual de franjas críticas, elementos que una API por si sola no resuelve para el usuario final;
-- una API podria existir como componente técnico interno, pero la forma de uso principal del artefacto debe ser una interfaz de consulta.
+- la salida requiere semáforos, históricos comparables y una lectura visual de franjas críticas, elementos que una API por sí sola no resuelve para el usuario final;
+- una API podría existir como componente técnico interno, pero la forma de uso principal del artefacto debe ser una interfaz de consulta.
 
 ### La actualización por cortes es suficiente para el valor operativo buscado
 
-- el valor principal de la solución esta en anticipar ventanas de 2h a 4h para apoyar decisiones tácticas, no en reaccionar a eventos de segundos;
-- la granularidad operativa definida es de 15 minutos, lo cual hace viable una lógica de actualizacion por cortes temporales sin perder utilidad funcional;
-- una arquitectura de streaming completo incrementaria complejidad de integración, monitoreo y validación sin ser indispensable para demostrar utilidad del artefacto en esta fase;
+- el valor principal de la solución está en anticipar ventanas de 2h a 4h para apoyar decisiones tácticas, no en reaccionar a eventos de segundos;
+- la granularidad operativa definida es de 15 minutos, lo cual hace viable una lógica de actualización por cortes temporales sin perder utilidad funcional;
+- una arquitectura de streaming completo incrementaría complejidad de integración, monitoreo y validación sin ser indispensable para demostrar utilidad del artefacto en esta fase;
 - por tanto, la solución se plantea con procesamiento reproducible por ventanas de tiempo y posibilidad de evolucionar hacia una mayor frecuencia de actualización.
 
 ### La alerta principal se concentra a nivel zona
 
-- la decisión primaria del usuario se toma a nivel zona, donde se evalua la necesidad de habilitar recursos adicionales;
-- el comportamiento por filtro es valioso como analítica complementaria, pero no siempre todos los filtros estan habilitados ni tienen estabilidad suficiente para soportar una alerta principal independiente;
+- la decisión primaria del usuario se toma a nivel zona, donde se evalúa la necesidad de habilitar recursos adicionales;
+- el comportamiento por filtro es valioso como analítica complementaria, pero no siempre todos los filtros están habilitados ni tienen estabilidad suficiente para soportar una alerta principal independiente;
 - priorizar la zona mejora robustez del MVP y deja el detalle por filtro como segunda capa de análisis.
 
-### La capacidad operativa se controla con un parametro manual de filtros activos
+### La capacidad operativa se controla con un parámetro manual de filtros activos
 
 - la operación requiere evaluar escenarios con diferente cantidad de filtros habilitados durante el día;
-- permitir al usuario ajustar manualmente el numero de filtros activos mantiene el artefacto conectado con la decisión operativa real sin exigir una capa prescriptiva completa;
-- este parámetro modifica la capacidad disponible y, por tanto, la lectura de ocupacion y criticidad;
-- la definición manual del numero de filtros activos es suficientemente simple para el MVP y evita comprometer una programación operativa completa de recursos.
+- permitir al usuario ajustar manualmente el número de filtros activos mantiene el artefacto conectado con la decisión operativa real sin exigir una capa prescriptiva completa;
+- este parámetro modifica la capacidad disponible y, por tanto, la lectura de ocupación y criticidad;
+- la definición manual del número de filtros activos es suficientemente simple para el MVP y evita comprometer una programación operativa completa de recursos.
 
 ### La separación entre `Ahora` e `Histórico` mejora la lectura del artefacto
 
-- el usuario operativo necesita una lectura rapida de corto plazo, mientras que el perfil analítico necesita explorar comparativos retrospectivos sin contaminar la vista principal de monitoreo;
+- el usuario operativo necesita una lectura rápida de corto plazo, mientras que el perfil analítico necesita explorar comparativos retrospectivos sin contaminar la vista principal de monitoreo;
 - mantener ambos usos en una sola pantalla sin separación contextual aumenta carga cognitiva y dificulta la interpretación inmediata;
 - la vista `Ahora` prioriza horizonte, criticidad, capacidad de referencia y concentración actual por filtro;
-- la vista `Histórico` prioriza fecha analizada, rango de comparacion, comportamiento observado y patrones repetitivos;
+- la vista `Histórico` prioriza fecha analizada, rango de comparación, comportamiento observado y patrones repetitivos;
 - esta separación conserva coherencia funcional entre perfiles y evita duplicar productos distintos para una misma necesidad.
 
-### Los controles cambian segun la vista seleccionada para reducir ambiguedad
+### Los controles cambian según la vista seleccionada para reducir ambigüedad
 
-- en `Ahora` el usuario necesita elegir horizonte de anticipación, porque la pregunta es que pasara en las próximas horas;
-- en `Histórico` el usuario necesita elegir rango de comparación, porque la pregunta es como se comporto una fecha frente a períodos comparables;
-- cambiar los controles junto con la vista reduce ambiguedad y hace que cada modo del tablero responda a una tarea concreta.
+- en `Ahora` el usuario necesita elegir horizonte de anticipación, porque la pregunta es qué pasará en las próximas horas;
+- en `Histórico` el usuario necesita elegir rango de comparación, porque la pregunta es cómo se comportó una fecha frente a períodos comparables;
+- cambiar los controles junto con la vista reduce ambigüedad y hace que cada modo del tablero responda a una tarea concreta.
 
 ## 10. Funcionalidades esperadas
 
 - consulta sin código,
 - selector global de vista `Ahora / Histórico`,
-- visualización de pronostico cada 15 minutos,
+- visualización de pronóstico cada 15 minutos,
 - visualización del volumen proyectado en personas,
 - línea de capacidad de referencia en la gráfica principal,
 - visualización de ocupación estimada en porcentaje respecto a capacidad,
@@ -213,19 +213,19 @@ El usuario accede a un tablero de consulta sin código y puede:
 
 ### Baselines
 
-- naive por ultima observación,
-- promedio historico por franja.
+- naive por última observación,
+- promedio histórico por franja.
 
-### Pregunta analítica 1. Como anticipar el flujo agregado por zona en intervalos de 15 minutos?
+### Pregunta analítica 1. ¿Cómo anticipar el flujo agregado por zona en intervalos de 15 minutos?
 
 **Alternativa 1: modelos de series de tiempo con variables exógenas**
 
 - ejemplos: regresión dinámica, SARIMAX, Prophet o modelos equivalentes con componentes temporales;
 - se consideran porque la variable objetivo tiene estructura temporal clara, estacionalidad intradía y dependencia secuencial;
 - permiten incorporar señales externas como programación de vuelos y conteos de ingreso al muelle sin perder interpretabilidad;
-- son especialmente pertinentes para horizontes cortos, donde la din´smica reciente del flujo tiene alto valor predictivo.
+- son especialmente pertinentes para horizontes cortos, donde la dinámica reciente del flujo tiene alto valor predictivo.
 
-**Alternativa 2: modelos de regresión supervisada basados en arboles**
+**Alternativa 2: modelos de regresión supervisada basados en árboles**
 
 - ejemplos: Random Forest, XGBoost, LightGBM o equivalentes;
 - se consideran porque el problema combina lags temporales, variables calendario, vuelos programados y señales operativas recientes;
@@ -235,36 +235,36 @@ El usuario accede a un tablero de consulta sin código y puede:
 **Justificación comparativa**
 
 - los modelos de series de tiempo priorizan trazabilidad e interpretación del comportamiento intradía;
-- los modelos de arboles priorizan flexibilidad predictiva y capacidad para capturar relaciones complejas entre fuentes heterogéneas;
+- los modelos de árboles priorizan flexibilidad predictiva y capacidad para capturar relaciones complejas entre fuentes heterogéneas;
 - ambos deben compararse contra baselines simples para verificar que exista ganancia real de desempeño.
 
-### Pregunta analitica 2. Como identificar franjas criticas para la emision de alertas operativas?
+### Pregunta analítica 2. ¿Cómo identificar franjas críticas para la emisión de alertas operativas?
 
 **Alternativa 1: clasificación derivada del pronóstico**
 
 - consiste en transformar el pronóstico continuo en niveles de criticidad mediante umbrales, percentiles históricos o capacidad operativa de referencia;
-- se considera porque conserva coherencia con la necesidad funcional principal: convertir una prediccion de flujo en una alerta interpretable;
+- se considera porque conserva coherencia con la necesidad funcional principal: convertir una predicción de flujo en una alerta interpretable;
 - facilita justificar cada alerta a partir de una variable continua y de reglas de negocio transparentes.
 
 **Alternativa 2: modelo de clasificación directa**
 
-- ejemplos: clasificación binaria o multiclase para estimar si una franja sera normal, de alerta o crítica;
+- ejemplos: clasificación binaria o multiclase para estimar si una franja será normal, de alerta o crítica;
 - se considera porque la salida operativa final es una decisión categórica y no solo un valor numérico;
 - permite optimizar métricas orientadas a detección de eventos críticos, como recall y F1, aun cuando el error promedio de regresión no capture del todo el costo operativo de perder un pico.
 
 **Justificación comparativa**
 
-- el enfoque derivado del pronóstico es mas trazable y mantiene una sola cadena analítica principal;
-- la clasificación directa puede ser mas útil si el objetivo operacional privilegia no omitir franjas críticas por encima de la precisión puntual;
-- ambos enfoques son validos y deben contrastarse según estabilidad de las etiquetas de criticidad y facilidad de adopción por el usuario.
+- el enfoque derivado del pronóstico es más trazable y mantiene una sola cadena analítica principal;
+- la clasificación directa puede ser más útil si el objetivo operacional privilegia no omitir franjas críticas por encima de la precisión puntual;
+- ambos enfoques son válidos y deben contrastarse según la estabilidad de las etiquetas de criticidad y la facilidad de adopción por parte del usuario.
 
-### Pregunta analítica 3. Como representar el comportamiento por filtro individual sin perder viabilidad?
+### Pregunta analítica 3. ¿Cómo representar el comportamiento por filtro individual sin perder viabilidad?
 
 **Alternativa 1: desagregación desde el pronóstico de zona**
 
 - consiste en proyectar el total por zona y distribuirlo por filtro a partir de participaciones históricas, reglas operativas o perfiles de uso;
 - se considera porque reduce complejidad, requiere menos datos por unidad y mantiene estable el MVP;
-- es apropiada cuando no todos los filtros estan siempre habilitados o cuando existe alta variabilidad en la activación individual.
+- es apropiada cuando no todos los filtros están siempre habilitados o cuando existe alta variabilidad en la activación individual.
 
 **Alternativa 2: modelos independientes por filtro**
 
@@ -274,17 +274,17 @@ El usuario accede a un tablero de consulta sin código y puede:
 
 **Justificación comparativa**
 
-- la desagregación top-down es mas simple y robusta para una primera implementación;
-- los modelos por filtro ofrecen mayor granularidad, pero exigen mejor calidad de datos y una definicion clara de recursos activos e inactivos;
-- por esta razon, el detalle predictivo por filtro se mantiene como capacidad deseable y no como requisito central del MVP.
+- la desagregación top-down es más simple y robusta para una primera implementación;
+- los modelos por filtro ofrecen mayor granularidad, pero exigen mejor calidad de datos y una definición clara de recursos activos e inactivos;
+- por esta razón, el detalle predictivo por filtro se mantiene como capacidad deseable y no como requisito central del MVP.
 
-### Criterio general de seleccion
+### Criterio general de selección
 
 - el baseline sirve como referencia operacional mínima;
 - las series de tiempo con exógenas aportan interpretabilidad y buen ajuste a la naturaleza secuencial del problema;
 - la regresión supervisada aporta capacidad para capturar no linealidades e interacciones entre múltiples fuentes;
-- la clasificación de criticidad permite alinear la salida con la decision operativa final;
-- la desagregación o modelado por filtro se evalua segun estabilidad y cobertura real de los recursos.
+- la clasificación de criticidad permite alinear la salida con la decisión operativa final;
+- la desagregación o modelado por filtro se evalúa según la estabilidad y la cobertura real de los recursos.
 
 La optimización se deja fuera del MVP porque incrementa complejidad y no es necesaria para demostrar viabilidad analítica del prototipo.
 
@@ -292,8 +292,8 @@ La optimización se deja fuera del MVP porque incrementa complejidad y no es nec
 
 | Fuente | Granularidad | Variable clave | Mecanismo de acceso previsto | Uso principal |
 |---|---|---|---|---|
-| Programación de vuelos | vuelo / tiempo programado | hora programada, destino, aerolínea, pasajeros programados | extracción desde tablas SQL Server integradas al entorno corporativo o desde exportaciones controladas derivadas de una capa refinada de esa arquitectura | senal planificada |
-| Validación de ingreso al muelle | evento individual / registro base a minuto, agregable a 15 min | timestamp de paso, vuelo, aerolínea | consulta a registros operativos anonimizados, provenientes de tablas SQL Server o vistas consolidadas del entorno analítico | senal operativa intermedia |
+| Programación de vuelos | vuelo / tiempo programado | hora programada, destino, aerolínea, pasajeros programados | extracción desde tablas SQL Server integradas al entorno corporativo o desde exportaciones controladas derivadas de una capa refinada de esa arquitectura | señal planificada |
+| Validación de ingreso al muelle | evento individual / registro base a minuto, agregable a 15 min | timestamp de paso, vuelo, aerolínea | consulta a registros operativos anonimizados, provenientes de tablas SQL Server o vistas consolidadas del entorno analítico | señal operativa intermedia |
 | Sensores de filtros | conteo por recurso / registro base a minuto, agregable a 15 min | timestamp, filtro, conteo | extracción desde históricos de sensores consolidados en el entorno analítico o desde repositorios derivados de SQL Server | variable objetivo y validación de flujo real |
 | Catálogos auxiliares | dimensión | aerolínea, operador, recurso | tablas maestras o dimensiones corporativas | homologación y enriquecimiento |
 
@@ -301,8 +301,8 @@ La optimización se deja fuera del MVP porque incrementa complejidad y no es nec
 
 ### Flujo general
 
-1. Extracción de fuentes historicas desde una capa refinada del entorno corporativo.
-2. Paso por arquitectura medallion o capa analítica equivalente en el entorno fuente.
+1. Disponibilidad de fuentes históricas en una arquitectura medallion o en una capa analítica equivalente del entorno corporativo.
+2. Extracción de la muestra controlada desde una capa refinada del entorno fuente.
 3. Homologación temporal y limpieza.
 4. Filtrado a la zona objetivo.
 5. Agregación desde resolución base a minuto hacia franjas de 15 minutos.
@@ -313,11 +313,11 @@ La optimización se deja fuera del MVP porque incrementa complejidad y no es nec
 
 ### Contexto de arquitectura de datos
 
-Las fuentes operativas del caso residen en bases de datos SQL Server y, en el entorno corporativo, su integración analítica se soporta sobre una arquitectura medallion o una capa equivalente de refinamiento progresivo del dato. Para este prototipo no se plantea una conexión productiva directa a esa arquitectura completa; por consideraciones de confidencialidad y alcance, la solución se construye sobre una muestra controlada y anonimizada, derivada de una capa refinada de dichas fuentes y suficiente para reproducir el flujo analitico del MVP.
+Las fuentes operativas del caso residen en bases de datos SQL Server y, en el entorno corporativo, su integración analítica se soporta sobre una arquitectura medallion o una capa equivalente de refinamiento progresivo del dato. Para este prototipo no se plantea una conexión productiva directa a esa arquitectura completa; por consideraciones de confidencialidad y alcance, la solución se construye sobre una muestra controlada y anonimizada, derivada de una capa refinada de dichas fuentes y suficiente para reproducir el flujo analítico del MVP.
 
 ### Regla de capacidad operativa
 
-La capacidad de referencia de la zona se calcula a partir del numero de filtros activos definido manualmente por el usuario y del tiempo promedio de proceso por pasajero. En esta versión del prototipo se toma como referencia un tiempo promedio de 23 segundos por persona. El calculo base se fórmula a nivel de minuto y luego se agrega a la franja operativa de 15 minutos, de modo consistente con la resolucion del tablero. La capacidad estimada se expresa tanto en numero de pasajeros como en porcentaje de ocupacion sobre dicha capacidad, de modo que el tablero pueda clasificar las franjas en condiciones normales, de alerta y críticas.
+La capacidad de referencia de la zona se calcula a partir del número de filtros activos definido manualmente por el usuario y del tiempo promedio de proceso por pasajero. En esta versión del prototipo se toma como referencia un tiempo promedio de 23 segundos por persona. El cálculo base se formula a nivel de minuto y luego se agrega a la franja operativa de 15 minutos, de modo consistente con la resolución del tablero. La capacidad estimada se expresa tanto en número de pasajeros como en porcentaje de ocupación sobre dicha capacidad, de modo que el tablero pueda clasificar las franjas en condiciones normales, de alerta y críticas.
 
 De manera inicial, la lectura de criticidad se plantea con estos umbrales:
 
@@ -326,24 +326,24 @@ De manera inicial, la lectura de criticidad se plantea con estos umbrales:
 
 ### Desarrollos requeridos para acceso y procesamiento
 
-- identificación de la capa fuente y de la capa refinada desde la cual se extraera la muestra de trabajo;
+- identificación de la capa fuente y de la capa refinada desde la cual se extraerá la muestra de trabajo;
 - homologación de llaves temporales entre las tres fuentes principales;
 - definición de reglas de filtrado para la zona objetivo;
 - agregación y consolidación de eventos desde resolución base a minuto hacia una granularidad de 15 minutos;
 - construcción de variables derivadas y lags para representar anticipación operativa;
-- incorporación del parametro de filtros activos en la capa de salida para recalcular capacidad y ocupación;
+- incorporación del parámetro de filtros activos en la capa de salida para recalcular capacidad y ocupación;
 - preparación de salidas consumibles por la interfaz de consulta.
 
-### Riesgos de calidad y mitigacion
+### Riesgos de calidad y mitigación
 
-- desalineacion temporal entre fuentes:
+- desalineación temporal entre fuentes:
   mitigación: homologación horaria y reglas de ventana común;
 - recursos con comportamiento inestable:
-  mitigación: exclusion o agrupación justificada;
+  mitigación: exclusión o agrupación justificada;
 - datos sensibles:
   mitigación: uso de muestra anonimizada en repositorio y entorno de visualización.
 
-## 14. Diagrama esquematico del artefacto
+## 14. Diagrama esquemático del artefacto
 
 La Figura 1 presenta el prototipo fachada del artefacto, integrando usuario, requerimientos, forma de uso, modelos, datos y procesos de ETL.
 
@@ -351,7 +351,7 @@ La Figura 1 presenta el prototipo fachada del artefacto, integrando usuario, req
 
 ### Nota de alcance del diagrama
 
-El diagrama representa la logica funcional del MVP. No implica despliegue productivo ni integración completa con la arquitectura corporativa.
+El diagrama representa la lógica funcional del MVP. No implica despliegue productivo ni integración completa con la arquitectura corporativa.
 
 ## 15. Arquitectura prevista
 
@@ -359,7 +359,7 @@ Adicionalmente al diagrama esquemático del artefacto, se plantea una arquitectu
 
 La Figura 2 muestra la arquitectura prevista de la solución, desde las fuentes históricas hasta la capa de consumo del resultado.
 
-![Figura 2. Arquitectura prevista de la solucion](<Diagrama 2.png>)
+![Figura 2. Arquitectura prevista de la solución](<Diagrama 2.png>)
 
 Esta arquitectura complementa el prototipo fachada y permite visualizar la ruta mínima desde las fuentes hasta el consumo del resultado, sin representar la arquitectura corporativa completa.
 
@@ -372,7 +372,7 @@ La representación visual de la interfaz se incluye en:
 Esta representación incluye:
 
 - vista global `Ahora` para seguimiento operativo,
-- vista global `Histórico` para comparacion retrospectiva,
+- vista global `Histórico` para comparación retrospectiva,
 - semáforo por zona,
 - línea temporal de demanda,
 - capacidad de referencia,
@@ -386,8 +386,8 @@ Esta representación incluye:
 ## 17. Coherencia back-end / front-end
 
 - la alerta por zona depende del motor de scoring y la clasificación de criticidad;
-- la vista `Ahora` depende del motor de pronóstico, de la clasificación de criticidad y de la disponibilidad de los ultimos cortes de datos;
-- la vista `Histórico` depende del histórico consolidado y de la logica de comparación por fecha o ventana equivalente;
+- la vista `Ahora` depende del motor de pronóstico, de la clasificación de criticidad y de la disponibilidad de los últimos cortes de datos;
+- la vista `Histórico` depende del histórico consolidado y de la lógica de comparación por fecha o ventana equivalente;
 - la distribución actual por filtro depende del detalle de sensores y de la identificación de recursos activos;
 - el histórico por filtro depende del detalle de sensores;
 - la confiabilidad visible depende de la evaluación del modelo;
@@ -404,7 +404,7 @@ Esta representación incluye:
 
 ## 19. Limitaciones
 
-- no se medira impacto real en operación,
+- no se medirá impacto real en operación,
 - no se incluye optimización completa,
 - no se garantiza despliegue productivo,
-- la actualización frecuente del dato se emulara mediante replay o recortes históricos y no mediante una integración en tiempo real.
+- la actualización frecuente del dato se emulará mediante replay o recortes históricos y no mediante una integración en tiempo real.
