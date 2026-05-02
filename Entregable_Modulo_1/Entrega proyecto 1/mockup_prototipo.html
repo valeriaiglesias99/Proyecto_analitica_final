@@ -1,0 +1,955 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mockup Prototipo Predictivo</title>
+  <style>
+    :root {
+      --bg: #f5f2ea;
+      --panel: #fffdf8;
+      --line: #d5ccb8;
+      --text: #1f2a2a;
+      --muted: #5f6b69;
+      --accent: #1d5f5a;
+      --accent-2: #d68c45;
+      --ok: #2f7d4b;
+      --warn: #b18400;
+      --crit: #b23b2e;
+      --shadow: 0 12px 30px rgba(40, 35, 20, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      background:
+        linear-gradient(135deg, rgba(214,140,69,0.08), transparent 40%),
+        linear-gradient(180deg, #f7f4ee, #efe7da);
+      color: var(--text);
+    }
+
+    .page {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 24px;
+      background:
+        radial-gradient(circle at top right, rgba(29,95,90,0.10), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(214,140,69,0.12), transparent 25%),
+        var(--panel);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      line-height: 1.05;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 56ch;
+    }
+
+    .controls {
+      padding: 24px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .control-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .field {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #faf7f1;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .field .value {
+      font-weight: 700;
+    }
+
+    .scenarios {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 4px 0 10px;
+      font-weight: 700;
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .segment-btn {
+      padding: 11px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #faf7f1;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
+    }
+
+    .segment-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .microcopy {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .chip {
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #faf7f1;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .chip.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1.2fr 0.9fr;
+      gap: 18px;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .panel h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .panel p.meta {
+      margin: -4px 0 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .kpi {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fbf8f2;
+    }
+
+    .kpi .label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .kpi .number {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .kpi .sub {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .timeline {
+      height: 260px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(to top, rgba(29,95,90,0.08), rgba(29,95,90,0.02)),
+        linear-gradient(to right, transparent 0 4%, rgba(95,107,105,0.07) 4% 4.3%, transparent 4.3% 8%),
+        linear-gradient(to top, rgba(95,107,105,0.06) 1px, transparent 1px);
+      background-size: auto, auto, 100% 25%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timeline svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .legend {
+      display: flex;
+      gap: 18px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+      background: currentColor;
+    }
+
+    .zone-status {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .status-card {
+      border: 1px solid var(--line);
+      border-left: 8px solid var(--warn);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fbf8f2;
+    }
+
+    .status-card.critical { border-left-color: var(--crit); }
+    .status-card.ok { border-left-color: var(--ok); }
+
+    .status-card .title {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+
+    .status-card .value {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .status-card .hint {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid #e8decb;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .badge.ok { background: rgba(47,125,75,0.12); color: var(--ok); }
+    .badge.warn { background: rgba(177,132,0,0.14); color: var(--warn); }
+    .badge.crit { background: rgba(178,59,46,0.14); color: var(--crit); }
+
+    .panel-tabs {
+      display: flex;
+      gap: 8px;
+      margin: 18px 0 12px;
+    }
+
+    .tab-btn {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #faf7f1;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .history-toolbar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .filter-box {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fbf8f2;
+    }
+
+    .filter-box.hot {
+      border-color: rgba(178,59,46,0.35);
+      box-shadow: inset 0 0 0 1px rgba(178,59,46,0.08);
+      background: linear-gradient(180deg, rgba(178,59,46,0.06), rgba(255,253,248,1));
+    }
+
+    .filter-box .name {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .filter-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .share {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .load-tag {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(178,59,46,0.10);
+      color: var(--crit);
+    }
+
+    .spark {
+      height: 42px;
+      border-radius: 10px;
+      background:
+        linear-gradient(180deg, rgba(214,140,69,0.10), transparent),
+        linear-gradient(to top, rgba(95,107,105,0.08) 1px, transparent 1px);
+      background-size: auto, 100% 50%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spark svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .note {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #f6efe2;
+      border: 1px dashed var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1100px) {
+      .grid, .header, .kpis, .control-grid, .filters, .history-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .segmented {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <section class="hero">
+        <span class="eyebrow">Vista conceptual de la solucion</span>
+        <h1>Tablero predictivo para habilitacion de filtros y alertas de congestion</h1>
+        <p class="lead">
+          Prototipo visual de la interfaz de consulta. La alerta principal se muestra a nivel zona.
+          El detalle por filtro se usa como analitica complementaria. La granularidad base es de 15 minutos.
+        </p>
+        <div class="tab-content active" data-content="ahora">
+          <div class="kpis">
+            <div class="kpi">
+              <span class="label">Horizonte activo</span>
+              <span class="number">4h</span>
+              <span class="sub">Prioridad operativa intradia</span>
+            </div>
+            <div class="kpi">
+              <span class="label">Demanda proyectada</span>
+              <span class="number">458</span>
+              <span class="sub">Pasajeros en la franja pico</span>
+            </div>
+            <div class="kpi">
+              <span class="label">Capacidad franja 15 min</span>
+              <span class="number">509</span>
+              <span class="sub">Capacidad por franja de 15 min</span>
+            </div>
+            <div class="kpi">
+              <span class="label">Ocupacion estimada</span>
+              <span class="number">90%</span>
+              <span class="sub">Sobre capacidad disponible</span>
+            </div>
+            <div class="kpi">
+              <span class="label">Acumulado del dia</span>
+              <span class="number">3,420</span>
+              <span class="sub">Pasajeros estimados hasta el corte</span>
+            </div>
+            <div class="kpi">
+              <span class="label">Filtro con mayor carga</span>
+              <span class="number">F7</span>
+              <span class="sub">18% del flujo proyectado</span>
+            </div>
+          </div>
+        </div>
+        <div class="tab-content" data-content="historico">
+          <div class="kpis">
+            <div class="kpi">
+              <span class="label">Fecha analizada</span>
+              <span class="number">14 Mar</span>
+              <span class="sub">Referencia seleccionada</span>
+            </div>
+            <div class="kpi">
+              <span class="label">Demanda observada</span>
+              <span class="number">436</span>
+              <span class="sub">Maximo del dia analizado</span>
+            </div>
+            <div class="kpi">
+              <span class="label">Promedio comparable</span>
+              <span class="number">388</span>
+              <span class="sub">Ultimos 30 dias comparables</span>
+            </div>
+            <div class="kpi">
+              <span class="label">Desviacion</span>
+              <span class="number">+12%</span>
+              <span class="sub">Frente al promedio historico</span>
+            </div>
+            <div class="kpi">
+              <span class="label">Acumulado del dia</span>
+              <span class="number">3,180</span>
+              <span class="sub">Pasajeros observados del dia</span>
+            </div>
+            <div class="kpi">
+              <span class="label">Filtro recurrente</span>
+              <span class="number">F7</span>
+              <span class="sub">Mayor participacion historica</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="hero controls">
+        <h2>Controles principales</h2>
+        <div>
+          <div class="section-label">Vista del informe</div>
+          <div class="panel-tabs" role="tablist" aria-label="Vista del informe">
+            <button class="tab-btn active" type="button" data-tab="ahora">Ahora</button>
+            <button class="tab-btn" type="button" data-tab="historico">Historico</button>
+          </div>
+        </div>
+        <div class="tab-content active" data-content="ahora">
+          <div class="control-grid">
+            <div class="field">
+              <label>Fecha</label>
+              <div class="value">2026-04-12</div>
+            </div>
+            <div class="field">
+              <label>Zona</label>
+              <div class="value">Muelle internacional</div>
+            </div>
+            <div class="field">
+              <label>Granularidad</label>
+              <div class="value">15 minutos</div>
+            </div>
+            <div class="field">
+              <label>Actualizacion</label>
+              <div class="value">Replay controlado</div>
+            </div>
+            <div class="field">
+              <label>Filtros activos</label>
+              <div class="value">13 filtros</div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Horizonte de consulta</div>
+            <div class="segmented" aria-label="Horizonte de consulta">
+              <div class="segment-btn">2h</div>
+              <div class="segment-btn active">4h</div>
+              <div class="segment-btn">6h</div>
+              <div class="segment-btn">24h</div>
+            </div>
+            <div class="microcopy">
+              La vista prioriza horizontes cortos para decisiones intradia y mantiene opciones ampliadas para seguimiento del resto del dia. La capacidad visible se estima a minuto, se recalcula con el numero de filtros activos y un tiempo promedio de 23 segundos por pasajero, y se consolida por franja de 15 minutos.
+            </div>
+          </div>
+        </div>
+        <div class="tab-content" data-content="historico">
+          <div class="control-grid">
+            <div class="field">
+              <label>Fecha analizada</label>
+              <div class="value">2026-03-14</div>
+            </div>
+            <div class="field">
+              <label>Zona</label>
+              <div class="value">Muelle internacional</div>
+            </div>
+            <div class="field">
+              <label>Granularidad</label>
+              <div class="value">15 minutos</div>
+            </div>
+            <div class="field">
+              <label>Periodo comparable</label>
+              <div class="value">Ultimos 30 dias</div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Rango de comparacion</div>
+            <div class="segmented" aria-label="Rango de comparacion">
+              <div class="segment-btn">7d</div>
+              <div class="segment-btn active">30d</div>
+              <div class="segment-btn">90d</div>
+              <div class="segment-btn">Mensual</div>
+            </div>
+            <div class="microcopy">
+              La vista historica compara la fecha seleccionada contra periodos recientes para detectar desviaciones y patrones repetitivos.
+            </div>
+          </div>
+        </div>
+        <div class="note">
+          La seleccion de la vista cambia la lectura completa del tablero: Ahora prioriza anticipacion operativa y Historico prioriza comparacion retrospectiva y analisis de comportamiento.
+        </div>
+        <div class="note">
+          Esta interfaz presenta una vista principal de operacion y una navegacion directa entre la lectura agregada de zona y el detalle analitico por filtro.
+        </div>
+      </aside>
+    </div>
+
+    <div class="grid">
+      <section class="panel">
+        <div class="tab-content active" data-content="ahora">
+          <h2>Linea temporal de demanda</h2>
+          <p class="meta">Prediccion, historico comparable y capacidad de referencia en intervalos de 15 minutos</p>
+          <div class="timeline">
+            <svg viewBox="0 0 800 260" preserveAspectRatio="none" aria-hidden="true">
+              <line x1="0" y1="82" x2="800" y2="82" stroke="#7a7f7f" stroke-dasharray="8 8" stroke-width="2"/>
+              <rect x="18" y="84" width="148" height="24" rx="12" fill="#f5f5f4" stroke="#d8d6d1"/>
+              <text x="92" y="100" text-anchor="middle" font-size="12" fill="#5f6b69" font-weight="700">Capacidad franja 15 min</text>
+              <polyline fill="none" stroke="#d68c45" stroke-width="3"
+                points="0,192 70,186 130,176 180,168 240,160 300,150 360,136 420,126 480,118 540,126 600,144 660,156 720,168 800,176"/>
+              <polyline fill="none" stroke="#1d5f5a" stroke-width="4"
+                points="0,204 70,194 130,184 180,176 240,168 300,156 360,136 420,116 480,94 540,114 600,144 660,158 720,170 800,178"/>
+              <polyline fill="none" stroke="rgba(29,95,90,0.25)" stroke-width="16" stroke-linecap="round"
+                points="0,212 70,202 130,192 180,184 240,176 300,164 360,144 420,124 480,102 540,122 600,152 660,166 720,178 800,186"/>
+              <circle cx="480" cy="94" r="5.5" fill="#1d5f5a"/>
+              <rect x="508" y="56" width="84" height="28" rx="14" fill="#edf6f4" stroke="#b8d6d2"/>
+              <text x="550" y="74" text-anchor="middle" font-size="12" fill="#1d5f5a" font-weight="800">458 pax</text>
+              <line x1="480" y1="28" x2="480" y2="232" stroke="#b23b2e" stroke-dasharray="6 6" stroke-width="2"/>
+              <rect x="458" y="16" width="86" height="28" rx="14" fill="#fff6f4" stroke="#e0b4ad"/>
+              <text x="501" y="35" text-anchor="middle" font-size="12" fill="#b23b2e" font-weight="700">Franja critica</text>
+            </svg>
+          </div>
+          <div class="legend">
+            <span style="color:#1d5f5a;">Prediccion</span>
+            <span style="color:#d68c45;">Historico comparable</span>
+            <span style="color:rgba(29,95,90,0.55);">Banda de confianza</span>
+            <span style="color:#7a7f7f;">Capacidad franja 15 min</span>
+          </div>
+        </div>
+        <div class="tab-content" data-content="historico">
+          <h2>Comportamiento historico comparable</h2>
+          <p class="meta">Demanda observada, promedio comparable y umbral de referencia para la fecha seleccionada</p>
+          <div class="timeline">
+            <svg viewBox="0 0 800 260" preserveAspectRatio="none" aria-hidden="true">
+              <line x1="0" y1="90" x2="800" y2="90" stroke="#7a7f7f" stroke-dasharray="8 8" stroke-width="2"/>
+              <rect x="18" y="94" width="148" height="24" rx="12" fill="#f5f5f4" stroke="#d8d6d1"/>
+              <text x="92" y="110" text-anchor="middle" font-size="12" fill="#5f6b69" font-weight="700">Percentil de referencia</text>
+              <polyline fill="none" stroke="#d68c45" stroke-width="3"
+                points="0,196 70,190 130,182 180,174 240,166 300,158 360,146 420,136 480,126 540,134 600,148 660,158 720,170 800,178"/>
+              <polyline fill="none" stroke="#1d5f5a" stroke-width="4"
+                points="0,204 70,198 130,190 180,182 240,172 300,160 360,144 420,124 480,104 540,118 600,142 660,154 720,166 800,174"/>
+              <circle cx="480" cy="104" r="5.5" fill="#1d5f5a"/>
+              <rect x="508" y="70" width="96" height="28" rx="14" fill="#edf6f4" stroke="#b8d6d2"/>
+              <text x="556" y="88" text-anchor="middle" font-size="12" fill="#1d5f5a" font-weight="800">+12% vs prom.</text>
+              <line x1="480" y1="28" x2="480" y2="232" stroke="#b18400" stroke-dasharray="6 6" stroke-width="2"/>
+              <rect x="454" y="16" width="104" height="28" rx="14" fill="#fff8ea" stroke="#ead9a8"/>
+              <text x="506" y="35" text-anchor="middle" font-size="12" fill="#b18400" font-weight="700">Fecha analizada</text>
+            </svg>
+          </div>
+          <div class="legend">
+            <span style="color:#1d5f5a;">Observado</span>
+            <span style="color:#d68c45;">Promedio comparable</span>
+            <span style="color:#7a7f7f;">Percentil de referencia</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="tab-content active" data-content="ahora">
+          <h2>Priorizacion operativa</h2>
+          <p class="meta">La alerta principal se emite por zona</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Franja</th>
+                <th>Demanda estimada</th>
+                <th>Ocupacion</th>
+                <th>Criticidad</th>
+                <th>Accion sugerida</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>09:45 - 10:00</td>
+                <td>372 pax</td>
+                <td>73%</td>
+                <td><span class="badge warn">Alerta</span></td>
+                <td>Revisar disponibilidad de filtros</td>
+              </tr>
+              <tr>
+                <td>10:15 - 10:30</td>
+                <td>428 pax</td>
+                <td>84%</td>
+                <td><span class="badge warn">Alerta</span></td>
+                <td>Preposicionar capacidad adicional</td>
+              </tr>
+              <tr>
+                <td>10:30 - 10:45</td>
+                <td>458 pax</td>
+                <td>90%</td>
+                <td><span class="badge crit">Critica</span></td>
+                <td>Escalar a operacion</td>
+              </tr>
+              <tr>
+                <td>11:00 - 11:15</td>
+                <td>331 pax</td>
+                <td>65%</td>
+                <td><span class="badge ok">Normal</span></td>
+                <td>Monitoreo</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2 style="margin-top:18px;">Vista por filtro</h2>
+          <p class="meta">Distribucion actual del flujo por filtro</p>
+          <div class="filters">
+            <div class="filter-box">
+              <div class="name">Filtro 1</div>
+              <div class="filter-meta">
+                <span class="share">7% del flujo actual</span>
+              </div>
+              <div class="spark">
+                <svg viewBox="0 0 100 42" preserveAspectRatio="none">
+                  <polyline fill="none" stroke="#1d5f5a" stroke-width="2.5" points="0,34 15,30 30,28 45,25 60,18 75,12 100,16"/>
+                </svg>
+              </div>
+            </div>
+            <div class="filter-box">
+              <div class="name">Filtro 2</div>
+              <div class="filter-meta">
+                <span class="share">11% del flujo actual</span>
+              </div>
+              <div class="spark">
+                <svg viewBox="0 0 100 42" preserveAspectRatio="none">
+                  <polyline fill="none" stroke="#d68c45" stroke-width="2.5" points="0,32 20,29 40,26 60,20 80,15 100,10"/>
+                </svg>
+              </div>
+            </div>
+            <div class="filter-box hot">
+              <div class="name">Filtro 7</div>
+              <div class="filter-meta">
+                <span class="load-tag">Mayor carga</span>
+                <span class="share">18% del flujo actual</span>
+              </div>
+              <div class="spark">
+                <svg viewBox="0 0 100 42" preserveAspectRatio="none">
+                  <polyline fill="none" stroke="#b23b2e" stroke-width="2.5" points="0,36 20,34 40,30 60,19 80,14 100,16"/>
+                </svg>
+              </div>
+            </div>
+            <div class="filter-box">
+              <div class="name">Filtro 9</div>
+              <div class="filter-meta">
+                <span class="share">9% del flujo actual</span>
+              </div>
+              <div class="spark">
+                <svg viewBox="0 0 100 42" preserveAspectRatio="none">
+                  <polyline fill="none" stroke="#d68c45" stroke-width="2.5" points="0,34 25,26 45,18 65,14 85,12 100,18"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" data-content="historico">
+          <h2>Reporte historico por filtro</h2>
+          <p class="meta">Consulta retrospectiva para analisis de comportamiento y comparacion de fechas</p>
+          <div class="history-toolbar">
+            <div class="field">
+              <label>Fecha de analisis</label>
+              <div class="value">2026-03-14</div>
+            </div>
+            <div class="field">
+              <label>Filtro</label>
+              <div class="value">Filtro 7</div>
+            </div>
+            <div class="field">
+              <label>Comparativo</label>
+              <div class="value">Ultimos 30 dias</div>
+            </div>
+          </div>
+          <div class="filters">
+            <div class="filter-box hot">
+              <div class="name">Filtro 7</div>
+              <div class="filter-meta">
+                <span class="load-tag">Historico destacado</span>
+                <span class="share">Promedio 16% del flujo</span>
+              </div>
+              <div class="spark">
+                <svg viewBox="0 0 100 42" preserveAspectRatio="none">
+                  <polyline fill="none" stroke="#b23b2e" stroke-width="2.5" points="0,35 15,31 30,27 45,23 60,18 75,15 100,17"/>
+                </svg>
+              </div>
+            </div>
+            <div class="filter-box">
+              <div class="name">Filtro 2</div>
+              <div class="filter-meta">
+                <span class="share">Promedio 10% del flujo</span>
+              </div>
+              <div class="spark">
+                <svg viewBox="0 0 100 42" preserveAspectRatio="none">
+                  <polyline fill="none" stroke="#d68c45" stroke-width="2.5" points="0,34 20,31 40,28 60,23 80,19 100,18"/>
+                </svg>
+              </div>
+            </div>
+            <div class="filter-box">
+              <div class="name">Filtro 1</div>
+              <div class="filter-meta">
+                <span class="share">Promedio 8% del flujo</span>
+              </div>
+              <div class="spark">
+                <svg viewBox="0 0 100 42" preserveAspectRatio="none">
+                  <polyline fill="none" stroke="#1d5f5a" stroke-width="2.5" points="0,35 20,33 40,30 60,25 80,22 100,20"/>
+                </svg>
+              </div>
+            </div>
+            <div class="filter-box">
+              <div class="name">Filtro 9</div>
+              <div class="filter-meta">
+                <span class="share">Promedio 9% del flujo</span>
+              </div>
+              <div class="spark">
+                <svg viewBox="0 0 100 42" preserveAspectRatio="none">
+                  <polyline fill="none" stroke="#d68c45" stroke-width="2.5" points="0,34 25,29 45,24 65,20 85,18 100,19"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="tab-content active" data-content="ahora">
+          <h2>Estado de zona</h2>
+          <p class="meta">Vista sintetica para el coordinador operativo</p>
+          <div class="zone-status">
+            <div class="status-card critical">
+              <div class="title">Semaforo de zona</div>
+              <div class="value">Critico</div>
+              <div class="hint">La franja pico supera el 85% de ocupacion estimada para la capacidad disponible.</div>
+            </div>
+            <div class="status-card">
+              <div class="title">Ocupacion estimada</div>
+              <div class="value">90%</div>
+              <div class="hint">La demanda proyectada equivale a 458 pasajeros frente a una capacidad estimada de 509 por franja de 15 minutos.</div>
+            </div>
+            <div class="status-card ok">
+              <div class="title">Confiabilidad visible</div>
+              <div class="value">87%</div>
+              <div class="hint">La prediccion se apoya en senales recientes de validacion y flujo observado.</div>
+            </div>
+            <div class="status-card ok">
+              <div class="title">Ultima actualizacion</div>
+              <div class="value">09:40</div>
+              <div class="hint">La actualizacion se representa mediante replay de datos historicos.</div>
+            </div>
+          </div>
+
+          <div class="note">
+            Si faltan datos o la confiabilidad cae, el tablero debe reducir el nivel de confianza visible
+            y marcar la prediccion como "usar con cautela".
+          </div>
+        </div>
+
+        <div class="tab-content" data-content="historico">
+          <h2>Resumen historico</h2>
+          <p class="meta">Lectura sintetica del comportamiento observado para la fecha seleccionada</p>
+          <div class="zone-status">
+            <div class="status-card">
+              <div class="title">Pico del dia</div>
+              <div class="value">436 pax</div>
+              <div class="hint">Valor observado en la franja de mayor carga del dia analizado.</div>
+            </div>
+            <div class="status-card critical">
+              <div class="title">Variacion historica</div>
+              <div class="value">+12%</div>
+              <div class="hint">Diferencia frente al promedio comparable del periodo de referencia.</div>
+            </div>
+            <div class="status-card">
+              <div class="title">Acumulado del dia</div>
+              <div class="value">3,180 pax</div>
+              <div class="hint">Volumen observado del dia analizado en la zona objetivo.</div>
+            </div>
+            <div class="status-card ok">
+              <div class="title">Filtro dominante</div>
+              <div class="value">F7</div>
+              <div class="hint">Filtro con mayor recurrencia de concentracion durante fechas comparables.</div>
+            </div>
+          </div>
+
+          <div class="note">
+            La vista historica facilita revisar fechas anteriores, detectar comportamientos atipicos y sustentar ajustes operativos con evidencia comparable.
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <script>
+    const modeButtons = document.querySelectorAll('.tab-btn[data-tab]');
+    const modeContents = document.querySelectorAll('.tab-content[data-content]');
+    const params = new URLSearchParams(window.location.search);
+    const initialView = params.get('view');
+
+    const applyView = (target) => {
+      modeButtons.forEach((btn) => btn.classList.toggle('active', btn.dataset.tab === target));
+      modeContents.forEach((content) => {
+        content.classList.toggle('active', content.dataset.content === target);
+      });
+    };
+
+    if (initialView === 'ahora' || initialView === 'historico') {
+      applyView(initialView);
+    }
+
+    modeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = button.dataset.tab;
+        applyView(target);
+      });
+    });
+  </script>
+</body>
+</html>
