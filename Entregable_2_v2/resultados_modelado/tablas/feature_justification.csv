@@ -1,0 +1,26 @@
+feature,tipo,justificacion_dominio
+veripax_total,VeriPax señal adelantada,"VeriPax aparece ~30 min antes del flujo en sensores (lag=-2, corr=0.83). Proxy más directo de pasajeros próximos a filtros."
+veripax_0_60,Bin anticipación 0-60 min,"Pasajeros a <1h del vuelo: ya atravesaron controles, flujo inminente en filtros."
+veripax_60_120,Bin anticipación 60-120 min,"Franja de mayor densidad de la distribución (p25=98 min, mediana=134 min). Señal más anticipada con más información."
+veripax_120_180,Bin anticipación 120-180 min,Pasajeros puntuales en vuelos de larga espera. Señal útil para picos prolongados.
+veripax_180_mas,Anticipación >180 min,Outliers operativos (viajeros muy anticipados). Incluido para no distorsionar los bins anteriores.
+veripax_sin_sobt,Sin match SOBT,Validaciones sin vuelo emparejado. Puede indicar ruido o vuelos no programados.
+vuelos_programados,Exógena vuelos,"Señal de programación. Correlación lag=-8 (2h antes, corr=0.45). Complementa VeriPax para horizontes más largos."
+pasajeros_programados,Exógena pasajeros,Volumen esperado por vuelos. Señal de escala para la demanda total de la franja.
+dia_semana,Calendario,El patrón de demanda varía por día de semana (operaciones internacionales concentradas en ciertos días).
+es_fin_semana,Calendario,Flag binario para capturar régimen distinto de fin de semana sin usar toda la dimensión dia_semana.
+mes,Calendario,Variación estacional mensual en tráfico internacional.
+slot_minute,Posición intradía,Minuto del día (0-1425). Captura el patrón circadiano sin requerir modelo estacional separado.
+sensor_lag_1,Lag target 1 franja,15 min de inercia operativa. La persistencia (lag=1) es el baseline más fuerte — confirma inercia del flujo.
+sensor_lag_2,Lag target 2 franjas,30 min. Complementa lag_1 para capturar inercia en tramos de alta densidad.
+sensor_lag_4,Lag target 4 franjas,1 hora. Captura la estructura de un vuelo completo aproximadamente.
+sensor_lag_8,Lag target 8 franjas,2 horas. Coincide con el horizonte operativo principal (declarado en entrevista funcional).
+veripax_lag_1,Lag VeriPax 1,VeriPax de la franja anterior: complementa sensor_lag con señal upstream.
+veripax_lag_2,Lag VeriPax 2,VeriPax de hace 30 min: da anticipación adicional sobre lo que llegará a filtros.
+veripax_lag_4,Lag VeriPax 4,VeriPax de hace 1h: captura pico de anticipación de la distribución VeriPax→SOBT.
+veripax_lag_8,Lag VeriPax 8,VeriPax de hace 2h: señal de anticipación máxima disponible por VeriPax.
+sensor_roll_mean_4,Media móvil sensor 4,Suavizado de 1h hacia atrás: elimina ruido de franjas individuales para tendencia reciente.
+sensor_roll_mean_8,Media móvil sensor 8,Suavizado de 2h: tendencia de demanda en el turno.
+veripax_roll_mean_4,Media móvil VeriPax 4,Tendencia suavizada de VeriPax reciente. Reduce el impacto de picos espurios.
+veripax_roll_mean_8,Media móvil VeriPax 8,Tendencia VeriPax del turno completo.
+veripax_to_pax_ratio,Ratio VeriPax/Programados,Porcentaje de pasajeros programados que ya validaron. Indica qué fracción del vuelo ya está en el muelle.

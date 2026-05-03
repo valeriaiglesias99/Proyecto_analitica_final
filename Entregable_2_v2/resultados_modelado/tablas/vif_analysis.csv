@@ -1,0 +1,26 @@
+feature,VIF,interpretacion
+veripax_total,388.43439005749786,Alto (>10): multicolinealidad
+veripax_sin_sobt,303.7922781957035,Alto (>10): multicolinealidad
+sensor_roll_mean_4,125.23953818900769,Alto (>10): multicolinealidad
+veripax_roll_mean_4,105.49258398506574,Alto (>10): multicolinealidad
+veripax_roll_mean_8,47.98396557907177,Alto (>10): multicolinealidad
+sensor_roll_mean_8,44.46958725642326,Alto (>10): multicolinealidad
+sensor_lag_2,23.987484426536458,Alto (>10): multicolinealidad
+sensor_lag_4,22.534697038790164,Alto (>10): multicolinealidad
+vuelos_programados,16.929877487216988,Alto (>10): multicolinealidad
+pasajeros_programados,16.9265448761107,Alto (>10): multicolinealidad
+veripax_lag_2,16.373544688446252,Alto (>10): multicolinealidad
+veripax_lag_4,16.11487887105759,Alto (>10): multicolinealidad
+sensor_lag_1,13.752498487563404,Alto (>10): multicolinealidad
+veripax_120_180,13.480482885753222,Alto (>10): multicolinealidad
+veripax_lag_1,12.25054717437448,Alto (>10): multicolinealidad
+veripax_60_120,10.93369378149206,Alto (>10): multicolinealidad
+veripax_lag_8,7.733275940589928,Moderado (5-10): vigilar
+sensor_lag_8,6.807475055594996,Moderado (5-10): vigilar
+veripax_180_mas,4.461795303173855,Bajo (<5): sin problema
+es_fin_semana,2.652337376210894,Bajo (<5): sin problema
+dia_semana,2.6312812721277887,Bajo (<5): sin problema
+slot_minute,2.0999941931063875,Bajo (<5): sin problema
+veripax_0_60,1.7084299750907865,Bajo (<5): sin problema
+veripax_to_pax_ratio,1.2319665256361303,Bajo (<5): sin problema
+mes,1.1057088703141955,Bajo (<5): sin problema

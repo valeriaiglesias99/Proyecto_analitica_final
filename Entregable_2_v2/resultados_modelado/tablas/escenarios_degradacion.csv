@@ -1,0 +1,6 @@
+escenario,señal_alerta,accion_inmediata,accion_fondo
+Caída cobertura VeriPax,veripax_total diario < 1000 por 3 días consecutivos,Activar modo degradado: solo lags + vuelos,Investigar fuente; no reentrenar sin datos repr.
+Hueco de sensores,sensor_day_complete=0 por >2 días consecutivos,Excluir período del scoring rolling,Reportar al área de sensores
+Drift de error,WMAPE rolling 7 días > 0.25 (>40% degradación),Emitir alerta al tablero operativo,Evaluar reentrenamiento con datos recientes
+Cambio en filtros activos,Número de filtros ≠ 13 de forma permanente,Ajustar parámetro CAPACITY_PER_15M manualmente,Recalibrar umbral crítico en tablero
+Cambio distribución horaria,SHAP de slot_minute pierde importancia relativa,Alerta de drift de concepto,Reentrenar con ventana más reciente

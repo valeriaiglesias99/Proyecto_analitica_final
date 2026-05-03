@@ -1,0 +1,7 @@
+componente,prioridad,riesgo,esfuerzo,criterio_done,responsable,dependencias
+Empaquetar scoring del modelo,Bloqueante,Medio,1-2 días,Script reproduce predicción con error <1% vs run original,Analista,Ninguna
+Vista Ahora (tablero operativo),Alta,Medio,2-3 días,Vista muestra pronóstico+criticidad+capacidad por franja,Analista,Scoring empaquetado
+Vista Histórico + filtros,Media,Bajo,1-2 días,Vista permite comparación por fecha y rango,Analista,Scoring empaquetado
+Simulación rolling 1h/2h/4h,Alta,Medio,1-2 días,Script produce forecasts 1-step encadenados por horizonte,Analista,Scoring empaquetado
+Monitoreo cobertura y drift,Alta,Alto,2 días,Alerta cuando WMAPE rolling>0.25 o VeriPax<1000/día,Analista,Todas las anteriores
+Validación con usuario,Media,Medio,1 día,Usuario completa 3 tareas base sin apoyo técnico,Analista+usuario,Tablero funcional

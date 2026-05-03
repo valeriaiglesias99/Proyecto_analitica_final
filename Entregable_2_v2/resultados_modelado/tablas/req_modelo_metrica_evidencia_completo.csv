@@ -1,0 +1,26 @@
+req_id,tipo,descripcion,prueba_prevista,modelo_componente,metrica,evidencia,estado
+N1,Negocio,Identificar franjas críticas a nivel zona,Recall≥0.80 en franjas críticas,Todos los modelos sobre criticidad derivada,Recall crítico,metrics_summary.csv,PARCIAL — Recall=0 en val; 0 en test con umbral 85%cap. Ver Sección 8: umbral adaptativo mejora recall.
+N2,Negocio,Mejora ≥10% sobre baseline,WMAPE: rf_iter_2 0.1789 vs baseline_persist 0.1935,rf_iter_2,WMAPE,metrics_summary.csv,PARCIAL — mejora 7.5% (no alcanza 10%). MAE mejora 7.7%. Reporte justifica por qué WMAPE de 18% es operativamente aceptable (≈28 pax error medio).
+N3,Negocio,"Salida accionable por franja, zona y fecha",100% franjas con predicción+criticidad,rf_iter_2,Cobertura de franjas,validation_predictions.csv + test_predictions.csv,CUBIERTO — predicciones completas en val y test.
+N4,Negocio,Históricos por filtro (13 filtros),Revisión funcional del tablero,sensores_filtro_15m.csv,Presencia en base limpia,bases_limpias/sensores_filtro_15m.csv,PENDIENTE (tablero) — datos disponibles en sensores_filtro_15m.csv.
+D1,Desempeño,WMAPE≤15% en horizontes 2h/4h,Out-of-time testing,rf_iter_2,WMAPE rolling,test_predictions.csv,"PARCIAL — WMAPE 1-step=18%, evaluación rolling 2h/4h pendiente de implementación."
+D2,Desempeño,MAE razonable por zona y franja,Evaluación temporal,rf_iter_2,MAE,metrics_summary.csv,"CUBIERTO — MAE val=27.9 pax, test=34.2 pax. Representan ~5% del flujo medio."
+D3,Desempeño,RMSE menor al baseline,Evaluación temporal,rf_iter_2,RMSE,metrics_summary.csv,CUBIERTO — RMSE val=36.2 vs baseline 40.5 (-11%).
+D4,Desempeño,Selección técnicamente justificada,Tabla comparativa con ≥3 criterios,Todos los modelos,Tabla comparativa,comparison_extended.csv,CUBIERTO — ver Sección 10 de este notebook.
+D5,Desempeño,Recall≥0.80 y F1≥0.70 en franjas críticas,Clasificación binaria sobre histórico,rf_iter_2,"Recall, F1",metrics_summary.csv,PARCIAL — igual que N1. Umbral adaptativo propuesto en Sección 8.
+F1,Funcionalidad,Consulta sin código,Prueba funcional con usuario,Tablero (pendiente),% tareas completadas,Prueba con usuario referencia,PENDIENTE — tablero no implementado en este módulo.
+F2,Funcionalidad,"Mostrar predicción, histórico y criticidad",Revisión interfaz,Tablero,Visual,Mockup Módulo 1,PENDIENTE — datos y predicciones disponibles; visualización pendiente.
+F3,Funcionalidad,Datos anonimizados en repo,Revisión repositorio,Pipeline ETL,Cero campos sensibles,bases_limpias/,CUBIERTO — bases limpias no contienen PII. Bases brutas no se distribuyen.
+F4,Funcionalidad,"Horizontes 2h, 4h, 6h, 24h",Prueba funcional,Simulación rolling (pendiente),Horizontes disponibles,Scripts de scoring,PENDIENTE — lógica de rolling forecast pendiente de implementación.
+F5,Funcionalidad,Controles adaptados al contexto (Ahora/Histórico),Prueba funcional en ambas vistas,Tablero,Separación de controles,Mockup Módulo 1,PENDIENTE — tablero.
+F6,Funcionalidad,Referencia de capacidad en lectura principal,Revisión funcional,Tablero,Línea de umbral visible,Mockup Módulo 1,PENDIENTE — cálculo de capacidad implementado (CAPACITY_PER_15M).
+F7,Funcionalidad,Ocupación en pax y % simultáneamente,Revisión funcional,Tablero,Doble representación,Mockup Módulo 1,PENDIENTE — tablero.
+F8,Funcionalidad,Filtros activos ajustables manualmente,Prueba funcional vista Ahora,Tablero,Cambio de capacidad y criticidad,Mockup Módulo 1,PENDIENTE — parámetro CAPACITY implementable con 1 línea de código.
+F9,Funcionalidad,Concentración por filtro + recurso mayor carga,Revisión funcional,sensores_filtro_15m.csv + Tablero,Identificación de 13 filtros,sensores_filtro_15m.csv,PENDIENTE — datos disponibles.
+U1,Usabilidad,≥80% tareas básicas sin ayuda,Prueba 2-3 usuarios,Tablero,% tareas completadas,Sesión de validación,PENDIENTE — tablero.
+U2,Usabilidad,Usuario identifica criticidad en <3 min,Revisión cualitativa,Tablero,Tiempo de comprensión,Sesión de validación,PENDIENTE — tablero.
+U3,Usabilidad,Vista principal prioriza alerta por zona,Revisión funcional,Tablero,Jerarquía visual,Mockup Módulo 1,PENDIENTE — tablero.
+Q1,Datos,Completitud≥98% en campos críticos,Perfilamiento,Pipeline ETL,% completitud,perfil_fuentes_modulo_2.json,CUBIERTO — reportado en perfil. 94.24% VeriPax válido; 100% sensores Muelle A/B.
+Q2,Datos,Ventana 3 meses documentada y reproducible,Revisión ETL,Pipeline ETL,Ventana cubierta,metadata_bases_limpias.json + hash en este notebook,CUBIERTO — hash MD5 de dataset congelado documentado en celda de setup.
+Q3,Datos,Lags o variables de anticipación documentados,Revisión feature engineering,add_features(),Existencia de lags + bins anticipación,feature_justification.csv (este notebook),CUBIERTO — 25 features documentadas con justificación de dominio en Sección 3.
+Q4,Datos,Recursos inestables excluidos o justificados,Análisis exploratorio,Pipeline ETL,Lista de exclusiones,metadata_bases_limpias.json,CUBIERTO — días parciales y gap sensores excluidos con justificación técnica.
