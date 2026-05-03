@@ -1,76 +1,92 @@
-# Entregable 2 — Versión Sobresaliente
+# Entregable 2 — Módulo 2: Selección y Parametrización de Modelos
 
-Carpeta de trabajo independiente para construir el documento final y el notebook end-to-end con las evidencias adicionales requeridas para el nivel sobresaliente de la rúbrica del Módulo 2.
+**Proyecto Aplicado en Analítica de Datos — Universidad de los Andes**  
+Grupo 23: Danilo Suárez Vargas · Valeria Iglesias Miranda · Sergio Andrés Perdomo Murcia
 
-## Estructura
+---
+
+## Descripción
+
+Entrega del módulo de modelado para el pronóstico de flujo de pasajeros en los filtros de seguridad de la zona internacional del aeropuerto. Se construyó un modelo Random Forest que integra tres fuentes de datos operativas (sensores de filtros, VeriPax y programación de vuelos) para pronosticar el flujo en franjas de 15 minutos con un WMAPE de 17.9% en validación.
+
+---
+
+## Estructura de la carpeta
 
 ```
-Entregable_2_Sobresaliente/
+Entregable_2_v2/
+├── Reporte_Modelado_Modulo2_PAAD2026.md   ← documento principal de la entrega
+├── environment.yml                         ← entorno conda reproducible
+├── requirements.txt                        ← alternativa pip
+├── datos_originales/
+│   └── programacionvuelos.csv             ← datos crudos de vuelos programados
 ├── bases_limpias/
-│   └── dataset_zona_15m.csv        ← único input del notebook (818KB, congelado)
+│   ├── dataset_zona_15m.csv               ← dataset analítico final (input del notebook)
+│   ├── sensores_filtro_15m.csv            ← flujo de sensores agregado a 15 min
+│   └── vuelos_internacionales_programados.csv
 ├── notebooks/
-│   └── 05_end_to_end_sobresaliente.ipynb   ← notebook principal
+│   └── Notebook_Modelado_Modulo2_PAAD2026.ipynb
 ├── resultados_modelado/
-│   ├── figuras/                    ← 6 figuras generadas
-│   ├── tablas/                     ← 12 CSVs generados
-│   ├── predicciones/
-│   └── artifacts/
-├── requirements.txt
-└── README_sobresaliente.md
+│   ├── artifacts/
+│   │   ├── best_model_sobresaliente.joblib ← modelo final serializado
+│   │   └── operational_metrics_summary.json
+│   ├── figuras/                            ← 9 figuras generadas
+│   └── tablas/                             ← 11 CSVs de métricas e iteraciones
+└── assets/
 ```
 
-## Cómo ejecutar
+> **Datos no incluidos por tamaño (>100 MB):** `dataveripax.csv` (303 MB) y `datasensores.csv` (203 MB) están disponibles en la carpeta `Entregable 2/Datos/` del repositorio local. El notebook solo requiere `dataset_zona_15m.csv` para ejecutarse.
+
+---
+
+## Cómo reproducir los resultados
+
+### Opción 1 — Conda (recomendado)
 
 ```bash
-# 1. Activar el entorno
-source '../.venv_mod2/bin/activate'
+conda env create -f environment.yml
+conda activate paad_mod2
+jupyter lab notebooks/Notebook_Modelado_Modulo2_PAAD2026.ipynb
+```
 
-# 2. Instalar dependencias (shap + statsmodels ya incluidos)
+### Opción 2 — pip + venv
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-
-# 3. Abrir el notebook
-jupyter notebook notebooks/05_end_to_end_sobresaliente.ipynb
-# → Kernel → Restart & Run All
+jupyter lab notebooks/Notebook_Modelado_Modulo2_PAAD2026.ipynb
 ```
 
-O en terminal sin interfaz gráfica:
-```bash
-../.venv_mod2/bin/jupyter nbconvert --to notebook --execute \
-  --ExecutePreprocessor.timeout=600 \
-  --output 05_ejecutado.ipynb \
-  notebooks/05_end_to_end_sobresaliente.ipynb
-```
+Una vez abierto el notebook: **Kernel → Restart & Run All**
 
-## Qué produce el notebook (artefactos por criterio)
+El notebook regenera todas las figuras, tablas, métricas y el modelo `.joblib` desde cero. Tiempo estimado de ejecución: ~10 minutos.
 
-| Criterio rúbrica | Artefacto generado |
+---
+
+## Modelos evaluados
+
+| Modelo | WMAPE val | WMAPE test | Paradigma |
+|---|---|---|---|
+| **RF rf_iter_2** | **0.179** | **0.184** | ML no lineal |
+| HGB | 0.181 | 0.180 | ML no lineal |
+| Ridge | 0.184 | 0.194 | ML lineal |
+| OLS statsmodels | 0.185 | 0.195 | Estadístico clásico |
+| Persistencia | 0.194 | 0.178 | Heurístico |
+| Prophet | 0.222 | 0.216 | Series de tiempo |
+| ARIMA(2,0,1) | 0.463 | 0.418 | Series de tiempo |
+
+---
+
+## Artefactos por criterio de rúbrica
+
+| Criterio | Artefacto |
 |---|---|
-| 2.1 Trazabilidad | `tablas/req_modelo_metrica_evidencia_completo.csv` (24 reqs con estado) |
-| 2.2 Alternativas | `tablas/comparison_extended.csv` (≥3 criterios + OLS + RF + HGB + baselines) |
-| 2.3 Supuestos | `figuras/vif_analysis.png`, `figuras/diagnostico_residuales_ridge.png`, `tablas/ljungbox_ridge.csv`, `tablas/vif_analysis.csv` |
-| 2.3 Features | `tablas/feature_justification.csv` (25 features con justificación de dominio) |
-| 2.4 Sensibilidad | `figuras/sensitivity_n_estimators.png`, `tablas/sensitivity_n_estimators.csv` |
-| 2.4 Train/val/test | `tablas/train_val_test_comparison.csv` (con discusión de overfitting) |
-| 2.4 Métricas | `artifacts/operational_metrics_summary.json` (traducción a unidades operativas) |
-| 2.5 SHAP global | `figuras/shap_summary_plot.png`, `tablas/shap_mean_importance.csv` |
-| 2.5 SHAP local | `figuras/shap_waterfall_alta_demanda.png`, `figuras/shap_waterfall_baja_demanda.png` |
-| 2.5 Iteraciones | `tablas/iteraciones_documentadas.csv` (5 iteraciones con fracasos documentados) |
-| 2.5 Criticidad test | Análisis inline + propuesta de umbral adaptativo |
-| 2.6 Plan | `tablas/plan_implementacion_completo.csv`, `tablas/escenarios_degradacion.csv` |
-| 2.7 OLS coeficientes | `tablas/ols_coefficients.csv` (p-values + Durbin-Watson) |
-
-## Qué falta incorporar al reporte escrito (`02_reporte_modelado_modulo2.md`)
-
-1. Sección nueva: "Verificación de supuestos estadísticos" con VIF + Ljung-Box + QQ-plot
-2. Ampliar Sección 4: tabla de justificación de features por dominio
-3. Ampliar Sección 7: tabla comparativa con ≥3 criterios + OLS como paradigma estadístico
-4. Ampliar Sección 8: narrar las 5 iteraciones documentadas (fracasos incluidos)
-5. Ampliar Sección 9: SHAP summary + waterfall + conexión con dominio operativo
-6. Ampliar Sección 10: criticidad en test + propuesta de umbral adaptativo
-7. Ampliar Sección 11: plan con prioridades, responsables, dependencias + escenarios degradación
-8. Sección nueva: "Traducción operativa de métricas" (WMAPE → pasajeros → implicación táctica)
-9. Ampliar Sección 6: tabla de 24 requerimientos con estado (cubierto/parcial/pendiente)
-
-## Datos que NO están en esta carpeta
-
-Los archivos de datos crudos grandes permanecen en `Entregable 2/Datos/` y las bases intermedias en `Entregable 2/bases_limpias/`. Este notebook solo requiere `dataset_zona_15m.csv` (el dataset analítico final, 818KB).
+| Trazabilidad (2.1) | `tablas/req_modelo_metrica_evidencia_completo.csv` |
+| Comparación modelos (2.2) | `tablas/comparison_extended.csv` |
+| Supuestos estadísticos (2.3) | `figuras/vif_analysis.png`, `figuras/diagnostico_residuales_ridge.png`, `tablas/ljungbox_ridge.csv` |
+| Sensibilidad hiperparámetros (2.4) | `figuras/sensitivity_n_estimators.png`, `tablas/sensitivity_n_estimators.csv` |
+| Interpretabilidad SHAP (2.5) | `figuras/shap_summary_plot.png`, `figuras/shap_waterfall_*.png` |
+| Iteraciones documentadas (2.5) | `tablas/iteraciones_documentadas.csv` |
+| Plan de implementación (2.6) | `tablas/plan_implementacion_completo.csv`, `tablas/escenarios_degradacion.csv` |
+| Métricas operativas (2.7) | `artifacts/operational_metrics_summary.json` |
