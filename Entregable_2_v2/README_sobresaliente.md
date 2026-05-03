@@ -15,7 +15,7 @@ Entrega del módulo de modelado para el pronóstico de flujo de pasajeros en los
 
 ```
 Entregable_2_v2/
-├── Reporte_Modelado_Modulo2_PAAD2026.md   ← documento principal de la entrega
+├── Reporte_de_seleccion_y_parametrizacion_de_modelos.md   ← documento principal de la entrega
 ├── environment.yml                         ← entorno conda reproducible
 ├── requirements.txt                        ← alternativa pip
 ├── datos_originales/
