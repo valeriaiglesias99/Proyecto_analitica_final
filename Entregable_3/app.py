@@ -164,7 +164,7 @@ def build_history_chart(history: list[dict]) -> go.Figure:
         return go.Figure()
     slots = [h["slot"] for h in history]
     vals  = [h["flow"] for h in history]
-    # Moving average as "comparable reference"
+
     ma = pd.Series(vals).rolling(4, min_periods=1).mean().tolist()
 
     fig = go.Figure()
@@ -314,7 +314,7 @@ result = st.session_state.last_result
 col_title, col_health = st.columns([5, 1])
 with col_title:
     st.markdown("# ✈️ Tablero Predictivo — Habilitación de Filtros")
-    st.caption("Zona Internacional · Muelle Internacional · Granularidad 15 min · Modelo `rf_iter_2`")
+    st.caption("Muelle Internacional - Granularidad 15 min - Modelo `rf_iter_2`")
 with col_health:
     healthy = check_health()
     if healthy:
@@ -343,7 +343,7 @@ if st.session_state.view == "Ahora":
         is_a   = result["is_alert"]
         is_c   = result["is_critical"]
 
-        # ── Fila de KPIs principales ──────────────────────────
+        # KPIs
         st.markdown("### 📊 Resumen de la predicción")
         k1, k2, k3, k4, k5 = st.columns(5)
 
