@@ -31,7 +31,7 @@ El artefacto tiene dos componentes:
 
 | Componente | Descripción |
 |---|---|
-| **API** (`rf_iter_2`) | Servicio FastAPI desplegado en `http://137.184.102.248` que ejecuta el modelo Random Forest entrenado con datos históricos del aeropuerto (enero–marzo 2026). Su documentación se encuentra en el archivo `API_documentacion.md`. |
+| **API**  | Servicio FastAPI desplegado en `http://137.184.102.248` que ejecuta el modelo Random Forest entrenado con datos históricos del aeropuerto (enero–marzo 2026). Su documentación se encuentra en el archivo `API_documentacion.md`. |
 | **Tablero Streamlit** | App que permite al operador ingresar los valores de la franja actual, consultar la predicción y visualizar la evolución histórica. |
 
 ### 1.2 Funcionalidad del artefacto
@@ -77,7 +77,7 @@ El artefacto tiene dos componentes:
 
 El tablero está desplegado públicamente y no requiere instalación:
 
-> 🔗 **URL de acceso:** `[URL_STREAMLIT_PENDIENTE]`  
+> 🔗 **URL de acceso:** ` https://proyecto-final-dsa.streamlit.app/
 
 **Requisitos del usuario/operador:**
 - Conexión a internet
@@ -239,7 +239,7 @@ Clic en **"Exportar CSV"** para descargar la tabla completa con todas las franja
 │  Vista Ahora  │  Vista Histórico    │
 │  Velocimetro · KPIs · Recomendación │
 │  Historial · Exportar CSV           │
-│  [URL_STREAMLIT_PENDIENTE]          │
+│  proyecto-final-dsa.streamlit.app/  │
 └─────────────────────────────────────┘
                    │
                    ▼

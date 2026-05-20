@@ -261,7 +261,7 @@ with st.sidebar:
     st.caption(f"veripax_to_pax_ratio calculado: `{veripax_to_pax_ratio:.3f}`")
 
     st.markdown("---")
-    predict_btn = st.button("🔮 Predecir próxima franja", use_container_width=True, type="primary")
+    predict_btn = st.button("Predecir próxima franja", use_container_width=True, type="primary")
 
 # Valores que se cargan al modelo
 
