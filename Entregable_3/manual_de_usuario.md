@@ -1,4 +1,4 @@
-![Banner del proyecto](assets/Banner_PAAD_01.jpg)
+![Banner del proyecto](Banner_PAAD_01.jpg)
 
 # Manual de Usuario
 ## Tablero Predictivo para Habilitación de Filtros y Alertas de Congestión
