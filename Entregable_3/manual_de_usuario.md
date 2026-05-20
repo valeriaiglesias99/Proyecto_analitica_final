@@ -221,7 +221,7 @@ Clic en **"Exportar CSV"** para descargar la tabla completa con todas las franja
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    FUENTES DE DATOS                             │
-│  [Sensores filtros]  [Sistema VeriPax]  [Programa de vuelos]   │
+│  [Sensores filtros]  [Sistema VeriPax]  [Programa de vuelos]    │
 └──────────────────────────┬──────────────────────────────────────┘
                            │ Features (25 variables)
                            ▼
@@ -237,9 +237,9 @@ Clic en **"Exportar CSV"** para descargar la tabla completa con todas las franja
 ┌─────────────────────────────────────┐
 │      Tablero Streamlit              │
 │  Vista Ahora  │  Vista Histórico    │
-│  Velocimetro · KPIs · Recomendación      │
-│  Historial · Exportar CSV          │
-│  [URL_STREAMLIT_PENDIENTE]         │
+│  Velocimetro · KPIs · Recomendación │
+│  Historial · Exportar CSV           │
+│  [URL_STREAMLIT_PENDIENTE]          │
 └─────────────────────────────────────┘
                    │
                    ▼
