@@ -56,7 +56,7 @@ El artefacto tiene dos componentes:
 ### 1.4 Ventajas del artefacto
 
 - **Anticipación operativa:** la combinación de señales VeriPax (pasajeros ya en el muelle) y rezagos de sensores permite predecir la congestión con suficiente tiempo para reaccionar.
-- **Sin instalación para el usuario final:** el tablero corre completamente en streamlit, accesible desde cualquier dispositivo con internet, ya sea computador o celular.
+- **Sin instalación para el usuario final:** el tablero corre en streamlit, accesible desde cualquier dispositivo con internet, ya sea computador o celular.
 - **Exportación de datos:** el historial de predicciones de cada sesión puede descargarse en CSV para informes y seguimientos futuros.
 - **Indicador visual:** el velocímetro y los rangos de color permiten identificar el estado en menos de 2 segundos sin leer números, generando una alerta rápida.
 
@@ -68,14 +68,14 @@ El artefacto tiene dos componentes:
 | **Error promedio de ~28 pax** | El modelo tiene un WMAPE de 17.9% sobre datos de validación, equivalente a ~28 pasajeros de error en promedio, no debe usarse como único criterio de decisión en situaciones límite y se debe tener presente este error. |
 | **Subestima picos extremos** | El modelo tiende a subestimar flujos por encima de 400 pax debido a eventos no observables, como lostiempos de migración variables o pasajeros de conexión sin validación VeriPax. |
 | **Sin historial entre sesiones** | El historial de las predicciones se pierde al cerrar o recargar la página. Por esto es necesario descargar los csv de las predicciones. |
-| **API debe estar activa** | Si la API en `http://137.184.102.248` no responde, el tablero no puede generar predicciones. |
+| **API debe estar activa** | Si la API en `http://137.184.102.248` no responde, el tablero no genera predicciones. |
 | **Datos de entrenamiento** | El modelo fue entrenado con datos de enero a marzo de 2026, si los patrones del aeropuerto cambian respecto al periodo de entrenamiento, la capacidad de predicción del modelo puede empeorar. |
 
 ## 2. Puesta en funcionamiento
 
 ### 2.1 Acceso al prototipo, usuario final:
 
-El tablero está desplegado públicamente y no requiere instalación:
+El tablero está desplegado públicamente y no requiere instalación. Se puede acceder de forma sencilla en el siguiente link:
 
 > 🔗 **URL de acceso:** ` https://proyecto-final-dsa.streamlit.app/
 
@@ -283,7 +283,7 @@ Clic en **"Exportar CSV"** para descargar la tabla completa con todas las franja
 | Modelo entrenado | `Entregable_2_v2/resultados_modelado/artifacts/best_model.joblib` |
 | Dataset de modelado | `Entregable_2_v2/bases_limpias/dataset_zona_15m.csv` |
 
-### 4.5 Escenarios de degradación y contingencia
+### 4.5 Escenarios  de alerta
 
 | Escenario | Señal | Acción |
 |---|---|---|
