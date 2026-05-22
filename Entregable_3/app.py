@@ -316,6 +316,9 @@ if predict_btn:
             "slot": now.strftime("%H:%M"),
             "flow": result["predicted_flow"],
             "ts": now,
+            "max_cap": MAX_CAPACITY,
+            "alert_th": ALERT_THRESHOLD,
+            "crit_th": CRITICAL_THRESHOLD,
         })
         # Mantener solo las últimas 16 franjas (4 horas)
         st.session_state.history = st.session_state.history[-16:]
@@ -488,12 +491,12 @@ else:
         st.info("Aún no hay predicciones en esta sesión. Ejecuta al menos una predicción en la vista **Ahora**.")
     else:
         df = pd.DataFrame(st.session_state.history)
-        df["pct"] = df["flow"] / MAX_CAPACITY * 100
-        df["estado"] = df["flow"].apply(
-            lambda f: "🔴 Crítico" if f >= CRITICAL_THRESHOLD
-            else ("🟡 Alerta" if f >= ALERT_THRESHOLD else "🟢 Normal")
+        df["pct"] = df["flow"] / df["max_cap"] * 100
+        df["estado"] = df.apply(
+            lambda r: "🔴 Crítico" if r["flow"] >= r["crit_th"]
+            else ("🟡 Alerta" if r["flow"] >= r["alert_th"] else "🟢 Normal"),
+            axis=1
         )
-
         # KPIs históricos
         h1, h2, h3, h4 = st.columns(4)
         with h1:
