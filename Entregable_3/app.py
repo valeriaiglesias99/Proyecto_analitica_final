@@ -21,6 +21,10 @@ st.set_page_config(
 
 API_URL = "http://137.184.102.248"
 
+MAX_CAPACITY = 13 * 39.1        # 508.7
+ALERT_THRESHOLD = round(MAX_CAPACITY * 0.70, 2)
+CRITICAL_THRESHOLD = round(MAX_CAPACITY * 0.85, 2)
+
 st.markdown("""
 <style>
 /* Fondo oscuro principal */
@@ -413,7 +417,7 @@ if st.session_state.view == "Ahora":
 
         with g_col:
             st.markdown("#### Indicador de carga")
-            st.plotly_chart(build_gauge(flow), use_container_width=True, config={"displayModeBar": False})
+            st.plotly_chart(build_gauge(flow, MAX_CAPACITY), use_container_width=True, config={"displayModeBar": False})
             # Umbral visual
             st.markdown(f"""
             <div style="display:flex; gap:12px; margin-top:4px">
