@@ -8,7 +8,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-
+import pathlib
 
 #Configuración de la página
 
@@ -20,6 +20,8 @@ st.set_page_config(
 )
 
 API_URL = "http://137.184.102.248"
+DATA_PATH = pathlib.Path(__file__).parent / "data" / "sensores_filtro_15m.csv"
+
 
 MAX_CAPACITY = 13 * 39.1        # 508.7
 ALERT_THRESHOLD = round(MAX_CAPACITY * 0.70, 2)
@@ -350,8 +352,8 @@ if st.session_state.view == "Ahora":
     else:
         flow   = result["predicted_flow"]
         pct    = flow / MAX_CAPACITY * 100
-        is_a   = result["is_alert"]
-        is_c   = result["is_critical"]
+        is_a   = flow >= ALERT_THRESHOLD
+        is_c   = flow >= CRITICAL_THRESHOLD
 
         # KPIs
         st.markdown("### 📊 Resumen de la predicción")
@@ -401,7 +403,7 @@ if st.session_state.view == "Ahora":
         st.markdown("#### Filtro de mayor carga")
 
         try:
-            df_filtros_ahora = pd.read_csv("data/sensores_filtro_15m.csv")
+            df_filtros_ahora = pd.read_csv(DATA_PATH)
             df_filtros_ahora["fecha_local"] = pd.to_datetime(df_filtros_ahora["fecha_local"])
             df_hoy = df_filtros_ahora[
                 df_filtros_ahora["fecha_local"] == df_filtros_ahora["fecha_local"].max()
@@ -555,7 +557,7 @@ else:
         st.markdown("#### 📋 Histórico por filtro")
 
         try:
-            df_filtros = pd.read_csv("data/sensores_filtro_15m.csv")
+            df_filtros = pd.read_csv(DATA_PATH)
             df_filtros["fecha_local"] = pd.to_datetime(df_filtros["fecha_local"])
             df_filtros["slot_15m"]    = pd.to_datetime(df_filtros["slot_15m"])
 
