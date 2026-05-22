@@ -21,12 +21,6 @@ st.set_page_config(
 
 API_URL = "http://137.184.102.248"
 
-# Umbrales
-
-ALERT_THRESHOLD = 356.09
-CRITICAL_THRESHOLD = 432.39
-MAX_CAPACITY = 508.7
-
 st.markdown("""
 <style>
 /* Fondo oscuro principal */
@@ -206,8 +200,20 @@ if "view" not in st.session_state:
 
 #Entradas del modelo
 with st.sidebar:
+    
+    
     st.markdown("## ⚙️ Parámetros de entrada")
-
+    
+    
+    st.markdown("### 🔧 Configuración de capacidad")
+    n_filtros = st.slider("Filtros activos", min_value=1, max_value=13, value=13)
+    MAX_CAPACITY       = n_filtros * 39.1
+    ALERT_THRESHOLD    = round(MAX_CAPACITY * 0.70, 2)
+    CRITICAL_THRESHOLD = round(MAX_CAPACITY * 0.85, 2)
+    st.caption(f"Capacidad: {MAX_CAPACITY:.1f} pax · Alerta: {ALERT_THRESHOLD} · Crítico: {CRITICAL_THRESHOLD}")
+    
+    st.markdown("---")
+    
     st.markdown("### 📅 Contexto temporal")
     now = datetime.datetime.now()
     slot_minute = (now.hour * 60 + (now.minute // 15) * 15)
@@ -386,6 +392,20 @@ if st.session_state.view == "Ahora":
                 <div class="metric-value">{veripax_total}</div>
                 <div class="metric-sub">Ratio: {veripax_to_pax_ratio:.2f}</div>
             </div>""", unsafe_allow_html=True)
+            
+        st.markdown("---")
+        st.markdown("#### Filtro de mayor carga")
+
+        try:
+            df_filtros_ahora = pd.read_csv("data/sensores_filtro_15m.csv")
+            df_filtros_ahora["fecha_local"] = pd.to_datetime(df_filtros_ahora["fecha_local"])
+            df_hoy = df_filtros_ahora[
+                df_filtros_ahora["fecha_local"] == df_filtros_ahora["fecha_local"].max()
+            ]
+            filtro_top = df_hoy.groupby("filtro")["flujo_filtro_15m"].sum().idxmax()
+            st.info(f"Filtro con mayor carga histórica reciente: **{filtro_top}**")
+        except Exception as e:
+            st.warning("No se pudo cargar la referencia histórica por filtro.")
 
         # Gauge + Breakdown 
         st.markdown("---")
@@ -525,6 +545,118 @@ else:
             file_name=f"predicciones_{now.strftime('%Y%m%d_%H%M')}.csv",
             mime="text/csv",
         )
+        
+        # ── Histórico por filtro ──────────────────────────────────────────
+        st.markdown("---")
+        st.markdown("#### 📋 Histórico por filtro")
+
+        try:
+            df_filtros = pd.read_csv("data/sensores_filtro_15m.csv")
+            df_filtros["fecha_local"] = pd.to_datetime(df_filtros["fecha_local"])
+            df_filtros["slot_15m"]    = pd.to_datetime(df_filtros["slot_15m"])
+
+            # Selector de fecha
+            fechas_disponibles = sorted(df_filtros["fecha_local"].dt.date.unique(), reverse=True)
+            fecha_sel = st.selectbox("Seleccionar fecha", fechas_disponibles,
+                                    format_func=lambda x: x.strftime("%d %b %Y"))
+
+            # Filtrar por fecha seleccionada
+            df_dia = df_filtros[df_filtros["fecha_local"].dt.date == fecha_sel].copy()
+
+            if df_dia.empty:
+                st.warning("No hay datos para la fecha seleccionada.")
+            else:
+                # Pivot: filas = franjas, columnas = filtros
+                df_pivot = df_dia.pivot_table(
+                    index="slot_15m", columns="filtro",
+                    values="flujo_filtro_15m", aggfunc="sum"
+                )
+
+                # Filtro dominante del día
+                filtro_dominante = df_pivot.sum().idxmax()
+                pico_dia = df_pivot.sum(axis=1).max()
+
+                # KPIs
+                c1, c2, c3 = st.columns(3)
+                with c1:
+                    st.markdown(f"""
+                    <div class="card">
+                        <div class="metric-label">Fecha analizada</div>
+                        <div class="metric-value">{fecha_sel.strftime('%d %b')}</div>
+                        <div class="metric-sub">{fecha_sel.strftime('%Y')}</div>
+                    </div>""", unsafe_allow_html=True)
+                with c2:
+                    st.markdown(f"""
+                    <div class="card">
+                        <div class="metric-label">Filtro dominante</div>
+                        <div class="metric-value" style="color:#f5c518">{filtro_dominante}</div>
+                        <div class="metric-sub">mayor flujo acumulado del día</div>
+                    </div>""", unsafe_allow_html=True)
+                with c3:
+                    st.markdown(f"""
+                    <div class="card">
+                        <div class="metric-label">Pico del día</div>
+                        <div class="metric-value">{pico_dia:.0f} pax</div>
+                        <div class="metric-sub">franja de mayor carga</div>
+                    </div>""", unsafe_allow_html=True)
+
+                # Selector de filtros a mostrar
+                filtros_disponibles = sorted(df_pivot.columns.tolist())
+                filtros_sel = st.multiselect(
+                    "Filtros a visualizar",
+                    options=filtros_disponibles,
+                    default=filtros_disponibles[:4]
+                )
+
+                if filtros_sel:
+                    # Gráfica por filtro
+                    fig_f = go.Figure()
+                    colors_f = ["#f5c518","#4caf50","#2196f3","#e91e63",
+                                "#ff9800","#9c27b0","#00bcd4","#ff5722",
+                                "#8bc34a","#607d8b","#ffc107","#3f51b5","#009688"]
+                    for i, filtro in enumerate(filtros_sel):
+                        fig_f.add_trace(go.Scatter(
+                            x=df_pivot.index.strftime("%H:%M"),
+                            y=df_pivot[filtro],
+                            mode="lines",
+                            name=filtro,
+                            line=dict(color=colors_f[i % len(colors_f)], width=1.5),
+                        ))
+                    fig_f.add_hrect(
+                        y0=ALERT_THRESHOLD, y1=CRITICAL_THRESHOLD,
+                        fillcolor="rgba(245,197,24,.08)", line_width=0,
+                    )
+                    fig_f.add_hrect(
+                        y0=CRITICAL_THRESHOLD, y1=MAX_CAPACITY,
+                        fillcolor="rgba(244,67,54,.10)", line_width=0,
+                    )
+                    fig_f.update_layout(
+                        paper_bgcolor="#242424", plot_bgcolor="#242424",
+                        margin=dict(t=10, b=10, l=10, r=10), height=280,
+                        legend=dict(font=dict(size=10, color="#aaa"),
+                                    bgcolor="rgba(0,0,0,0)", orientation="h"),
+                        xaxis=dict(showgrid=False, tickfont=dict(color="#666"), color="#666"),
+                        yaxis=dict(showgrid=True, gridcolor="#333",
+                                tickfont=dict(color="#666"), color="#666"),
+                        font=dict(color="#f9f8f4"),
+                    )
+                    st.plotly_chart(fig_f, use_container_width=True,
+                                config={"displayModeBar": False})
+
+                    # Tabla resumen por filtro
+                    st.markdown("##### Resumen por filtro")
+                    resumen = pd.DataFrame({
+                        "Filtro": filtros_sel,
+                        "Flujo total (pax)": [df_pivot[f].sum().round(0) for f in filtros_sel],
+                        "Pico (pax)":        [df_pivot[f].max().round(0) for f in filtros_sel],
+                        "Promedio (pax)":    [df_pivot[f].mean().round(1) for f in filtros_sel],
+                    }).sort_values("Flujo total (pax)", ascending=False)
+                    st.dataframe(resumen, use_container_width=True, hide_index=True)
+
+        except FileNotFoundError:
+            st.warning("Archivo sensores_filtro_15m.csv no encontrado en la carpeta data/.")
+        except Exception as e:
+            st.error(f"Error cargando datos por filtro: {e}")
 
 # Información sobre modelo utilizado
 
